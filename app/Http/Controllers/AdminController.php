@@ -58,6 +58,7 @@ class AdminController extends Controller
     //postDelete
     public function postDelete(Post $id){
         $id->delete();
+        Storage::delete('public/'.$id->image);
         return to_route('admin#postList');
     }
 

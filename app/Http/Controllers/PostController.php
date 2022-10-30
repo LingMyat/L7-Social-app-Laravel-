@@ -43,6 +43,7 @@ class PostController extends Controller
     //post Delete
     public function postDelete(Post $id){
         $id->delete();
+        Storage::delete('public/'.$id->image);
         return to_route('user#home');
     }
 }
