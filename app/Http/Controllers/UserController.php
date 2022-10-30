@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRequest;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\PasswordChangeRequest;
 
 class UserController extends Controller
 {
@@ -32,5 +34,15 @@ class UserController extends Controller
         }
         $id->update($validated);
         return to_route('user#profile',$id->id);
+    }
+    //changePassword
+    public function changePassword(User $id,PasswordChangeRequest $request){
+        $validated=$request->validated();
+        if (Hash::check($request->current_psw,$id->password)) {
+            $id->update(['password'=>Hash::make($request->new_psw)]);
+            return to_route('user#profile',$id->id);
+        } else {
+            return back()->with('notMatch','Please enter a valid password');
+        }
     }
 }

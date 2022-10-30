@@ -32,9 +32,7 @@ Route::controller(AuthController::class)
 Route::get('logout',[AuthController::class,'logout'])->name('auth#logout');
 
 Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
+    'auth:sanctum'
 ])->group(function () {
     // Admin Panel
     Route::middleware('adminAuth')
@@ -58,6 +56,7 @@ Route::middleware([
         ->group(function(){
             Route::get('profile/{id}','profile')->name('admin#profile');
             Route::post('profile/update/{id}','profileUpdate')->name('admin#profileUpdate');
+            Route::post('change/password/{id}','changePassword')->name('admin#changePassword');
         });
     });
 
@@ -70,6 +69,7 @@ Route::middleware([
         Route::get('home','userHome')->name('user#home');
         Route::get('profile/{id}','profile')->name('user#profile');
         Route::post('profile/update{id}','profileUpdate')->name('user#profileUpdate');
+        Route::post('change/password/{id}','changePassword')->name('user#changePassword');
     });
     // Post Section
     Route::controller(PostController::class)
