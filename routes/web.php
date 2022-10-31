@@ -72,5 +72,7 @@ Route::middleware([
     ->prefix('comment')
     ->group(function(){
         Route::post('create','commentCreate')->name('user#commentCreateComment');
+        Route::get('delete','commentDelete');
+        Route::post('update/{id}','commentUpdate')->name('user#commentUpdate');
     });
 });

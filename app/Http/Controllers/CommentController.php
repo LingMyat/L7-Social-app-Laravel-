@@ -13,4 +13,14 @@ class CommentController extends Controller
         Comment::create($request->validated());
         return back();
     }
+    //commentDelete
+    public function commentDelete(Request $request){
+        Comment::find($request->id)->delete();
+        return response()->json(['status'=>'success'],204);
+    }
+    //commentUpdate
+    public function commentUpdate(Request $request,Comment $id){
+        $id->update(['content'=>$request->content]);
+        return back();
+    }
 }
