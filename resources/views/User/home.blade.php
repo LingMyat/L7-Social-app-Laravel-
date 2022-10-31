@@ -18,19 +18,27 @@
                 @foreach ($posts as $post)
                     <div class="col-4">
                         <div class="card">
-                            <img src="{{ asset('storage/'.$post->image) }}" class="card-img-top" alt="...">
+                            <a href="{{ route('user#postView',$post->id) }}">
+                                <img src="{{ asset('storage/'.$post->image) }}" class="card-img-top" alt="...">
+                            </a>
                             <div class="card-body">
                               <div class="row">
                                 <div class="col-12 mt-3 d-flex gap-3 align-items-center">
                                     @if ($post->user->image == Null)
-                                        <img style="width: 40px;height:40px;" class="rounded-circle" src="{{ asset('storage/user (3).jpg') }}" alt="">
+                                        <a href="{{ route('user#profile',$post->user_id) }}">
+                                            <img style="width: 40px;height:40px;" class="rounded-circle" src="{{ asset('storage/user (3).jpg') }}" alt="">
+                                        </a>
                                      @else
-                                        <img style="width: 40px;height:40px;" class="rounded-circle" src="{{ asset('storage/'.$post->user->image) }}" alt="">
+                                        <a href="{{ route('user#profile',$post->user_id) }}">
+                                            <img style="width: 40px;height:40px;" class="rounded-circle" src="{{ asset('storage/'.$post->user->image) }}" alt="">
+                                        </a>
                                     @endif
                                     <div class="">{{ $post->user->name }}</div>
                                 </div>
                                 <div class=" col-8 px-2">
-                                    <h5 class="py-2 card-title">{{ $post->title }}</h5>
+                                    <a href="{{ route('user#postView',$post->id) }}">
+                                        <h5 class="py-2 card-title">{{ $post->title }}</h5>
+                                    </a>
                                 </div>
                                 <div class="col-4 pt-2 px-5 d-flex gap-2 justify-content-end @if ($post->user_id !== auth()->id()) d-none @endif">
                                     <a href="{{ route('user#postEdit',$post->id) }}"><i class="bi bi-pencil"></i></a>

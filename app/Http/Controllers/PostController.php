@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -23,6 +24,11 @@ class PostController extends Controller
         } else {
             return back()->with('imgNeed','The image field is required.');
         }
+    }
+    //postView
+    public function postView(Post $id){
+        $comments = Comment::where('post_id',$id->id)->get();
+        return view('User.post.postView',['post'=>$id,'comments'=>$comments]);
     }
     //post Edit
     public function postEdit(Post $id){

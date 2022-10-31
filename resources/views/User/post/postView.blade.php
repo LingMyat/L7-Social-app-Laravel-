@@ -1,4 +1,4 @@
-@extends('layout.master')
+@extends('user.layout')
 @section('search')
     <div class="search-bar">
         <form class="search-form d-flex align-items-center" method="POST" action="#">
@@ -30,6 +30,30 @@
                             </div>
                           </div>
                           <p class="card-text">{{ $post->content }}</p>
+                          <hr>
+                          <div class="p-0">
+                            <h4>Comments</h4>
+                            @foreach ($comments as $comment)
+                                <div class="p-2">
+                                    <img style="width: 35px;height:35px;" class="rounded-circle" src="{{ asset('storage/'.$comment->user->image) }}" alt="">
+                                    <h6 class=" d-inline-block ms-1"><b>{{ $comment->user->name }}</b></h6>
+                                    <small class="float-end">{{ $comment->created_at }}</small>
+                                    <small class="px-4 d-block"><b>-</b><i>{{ $comment->content }}</i></small>
+                                </div>
+                            @endforeach
+
+                            <form action="{{ route('user#commentCreateComment') }}" method="POST">
+                                @csrf
+                                <div class="input-group p-2">
+                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                    <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                    <input type="text" name="content" class="form-control form-control-sm" placeholder="Enter to post comment">
+                                    <button class="btn btn-primary">
+                                        <i class="bi bi-caret-up-fill"></i>
+                                    </button>
+                                </div>
+                            </form>
+                          </div>
                         </div>
                     </div>
                 </div>

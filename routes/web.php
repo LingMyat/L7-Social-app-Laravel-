@@ -3,24 +3,11 @@
 use App\Http\Controllers\AdminAccountControllre;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 Route::controller(AuthController::class)
 ->group(function(){
     Route::redirect('/','loginPage');
@@ -60,7 +47,6 @@ Route::middleware([
         });
     });
 
-
     // User Panel
     Route::controller(UserController::class)
     ->prefix('user')
@@ -76,9 +62,15 @@ Route::middleware([
     ->prefix('post')
     ->group(function(){
         Route::get('create/page','postCreatePage')->name('user#postCreatePage');
+        Route::get('view/{id}','postView')->name('user#postView');
         Route::post('create','postCreate')->name('user#postCreate');
         Route::get('edit/{id}','postEdit')->name('user#postEdit');
         Route::post('update/{id}','postUpdate')->name('user#postUpdate');
         Route::get('delete/{id}','postDelete')->name('user#postDelete');
+    });
+    Route::controller(CommentController::class)
+    ->prefix('comment')
+    ->group(function(){
+        Route::post('create','commentCreate')->name('user#commentCreateComment');
     });
 });
