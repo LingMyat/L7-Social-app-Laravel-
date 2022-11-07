@@ -56,6 +56,11 @@ Route::middleware([
         Route::get('profile/{id}','profile')->name('user#profile');
         Route::post('profile/update{id}','profileUpdate')->name('user#profileUpdate');
         Route::post('change/password/{id}','changePassword')->name('user#changePassword');
+        Route::get('addFriend','addFriend');
+        Route::get('respondFriend','respondFriend');
+        Route::get('confirmFri','confirmFri');
+        Route::get('deleteFriReq','deleteFriReq');
+        Route::get('unFriend','unFriend');
     });
     // Post Section
     Route::controller(PostController::class)

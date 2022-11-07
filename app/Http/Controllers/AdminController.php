@@ -12,12 +12,16 @@ class AdminController extends Controller
 {
     //userList
     public function userList(){
-        $users = User::where('role','user')->paginate(6);
+        $users = User::when(request('search'),function($dt){
+            $dt->where('name','like','%'.request('search').'%')->where('role','user');
+        })->where('role','user')->paginate(6);
         return view('Admin.userList',compact('users'));
     }
     //postList
     public function postList(){
-        $posts = Post::orderBy('id','desc')->paginate(6);
+        $posts = Post::when(request('search'),function($data){
+            $data->where('title','like','%'.request('search').'%');
+        })->orderBy('id','desc')->paginate(6);
         return view('Admin.postList',compact('posts'));
     }
     //postCreatePage

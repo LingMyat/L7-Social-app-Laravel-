@@ -1,8 +1,8 @@
 @extends('layout.master')
 @section('search')
     <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <form class="search-form d-flex align-items-center" method="get" action="{{ route('admin#postList') }}">
+            <input type="text" name="search" placeholder="Search" title="Enter search keyword">
             <button type="submit" title="Search"><i class="bi bi-search"></i></button>
         </form>
   </div>
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <div class="">
-                        {{ $posts->links() }}
+                        {{ $posts->appends(request()->query())->links() }}
                     </div>
                 </div>
             </div>

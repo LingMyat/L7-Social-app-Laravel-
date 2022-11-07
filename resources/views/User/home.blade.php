@@ -1,8 +1,8 @@
 @extends('user.layout')
 @section('search')
     <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <form class="search-form d-flex align-items-center" method="get" action="{{ route('user#home') }}">
+            <input type="text" name="search" placeholder="Search" title="Enter search keyword">
             <button type="submit" title="Search"><i class="bi bi-search"></i></button>
         </form>
   </div>
@@ -52,7 +52,7 @@
                     </div>
                 @endforeach
             </div>
-            <div class="">{{ $posts->links() }}</div>
+            <div class="">{{ $posts->appends(request()->query())->links() }}</div>
             </div>
         </section>
     </main><!-- End #main -->
