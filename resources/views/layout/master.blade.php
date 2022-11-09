@@ -30,12 +30,13 @@
   <!-- Template Main CSS File -->
   <link href="/assets/css/style.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin - v2.4.1
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+  <style>
+    body{
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+</style>
 </head>
 
 <body>
@@ -155,7 +156,7 @@
   @yield('content')
 
   <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
+  <footer style="margin-top: auto !important;" id="footer" class="footer">
     <div class="copyright">
       &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
     </div>

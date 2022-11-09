@@ -11,20 +11,22 @@
     <main id="main" class="main">
         <section class="section">
             <div class="row">
-                <div class="col-3 mb-3 offset-9">
+                <div class="col-lg-3 mb-3 offset-lg-9">
                     <a href="{{ route('admin#postList') }}" class="btn btn-danger {{ auth()->user()->role=='admin'?'':'d-none' }}">Back to Admin</a>
                     <a href="{{ route('user#postCreatePage') }}" class="{{ auth()->user()->role=='admin'?'':'float-end' }} btn btn-success">Add Post+</a>
                 </div>
+                <input type="hidden" id="currentUser" value="{{ auth()->id() }}">
                 @foreach ($posts as $post)
-                    <div class="col-4">
+                    <div class="col-md-6 col-lg-4">
                         <div class="card">
                             <a href="{{ route('user#postView',$post->id) }}">
                                 <img src="{{ asset('storage/'.$post->image) }}" class="card-img-top" alt="...">
                             </a>
                             <div class="card-body">
                               <div class="row">
-                                <div class="col-12 mt-3 d-flex gap-3 align-items-center">
-                                    @if ($post->user->image == Null)
+                                <div class="col-12 mt-3 d-flex gap-3 justify-content-between align-items-center">
+                                    <div class="">
+                                        @if ($post->user->image == Null)
                                         <a href="{{ route('user#profile',$post->user_id) }}">
                                             <img style="width: 40px;height:40px;" class="rounded-circle" src="{{ asset('storage/user (3).jpg') }}" alt="">
                                         </a>
@@ -33,8 +35,16 @@
                                             <img style="width: 40px;height:40px;" class="rounded-circle" src="{{ asset('storage/'.$post->user->image) }}" alt="">
                                         </a>
                                     @endif
-                                    <div class="">{{ $post->user->name }}</div>
+                                    <div class=" d-inline">{{ $post->user->name }}</div>
+                                    </div>
+
+                                    <div style="cursor: pointer" class="parent">
+                                        <input type="hidden" class="postId" value="{{ $post->id }}">
+                                        <i class="{{ checkLiked($post->id)?'d-none':''; }} bi bi-heart like_btn"></i>
+                                        <i class="{{ checkLiked($post->id)?'':'d-none'; }} bi bi-heart-fill text-danger unlike_btn"></i>
+                                    </div>
                                 </div>
+
                                 <div class=" col-8 px-2">
                                     <a href="{{ route('user#postView',$post->id) }}">
                                         <h5 class="py-2 card-title">{{ $post->title }}</h5>
@@ -56,4 +66,43 @@
             </div>
         </section>
     </main><!-- End #main -->
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function(){
+            $('.like_btn').click(function(){
+                $parent = $(this).parents('.parent');
+                $postId = $parent.find('.postId').val();
+                $unLikeBtn = $parent.find('.unlike_btn');
+                $(this).addClass('d-none');
+                $unLikeBtn.removeClass('d-none');
+                $.ajax({
+                    type : 'get',
+                    url : '/like',
+                    data : {
+                        post_id : $postId,
+                        user_id : $('#currentUser').val()
+                    },
+                    dataType : 'json',
+                })
+            });
+
+            $('.unlike_btn').click(function(){
+                $parent = $(this).parents('.parent');
+                $postId = $parent.find('.postId').val();
+                $LikeBtn = $parent.find('.like_btn');
+                $(this).addClass('d-none');
+                $LikeBtn.removeClass('d-none');
+                $.ajax({
+                    type : 'get',
+                    url : '/unLike',
+                    data : {
+                        post_id : $postId,
+                        user_id : $('#currentUser').val()
+                    },
+                    dataType : 'json',
+                })
+            });
+        })
+    </script>
 @endsection

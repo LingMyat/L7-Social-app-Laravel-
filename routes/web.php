@@ -4,6 +4,8 @@ use App\Http\Controllers\AdminAccountControllre;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -79,5 +81,17 @@ Route::middleware([
         Route::post('create','commentCreate')->name('user#commentCreateComment');
         Route::get('delete','commentDelete');
         Route::post('update/{id}','commentUpdate')->name('user#commentUpdate');
+    });
+    Route::controller(LikeController::class)
+    ->group(function(){
+        Route::get('like','like');
+        Route::get('unLike','unLike');
+    });
+    Route::controller(MessageController::class)
+    ->prefix('message')
+    ->group(function(){
+        Route::get('index','index')->name('message#index');
+        Route::post('send','sendMessage')->name('message#send');
+        Route::get('view/{id}','viewMessage')->name('message#view');
     });
 });
