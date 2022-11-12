@@ -51,7 +51,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($allMessages as $message)
-                                    <tr>
+                                    <tr class=" ">
                                         <td>
                                             @if ($message->sender->image == Null)
                                                 <img style="width: 50px;height:50px;" class="rounded-circle me-1" src="{{ asset('storage/user (3).jpg') }}" alt="">
@@ -62,10 +62,13 @@
                                         </td>
                                         <td class="pt-4">{{ Str::words($message->content, 8, '...') }}</td>
                                         <td class="pt-4">{{ $message->created_at->format('h:i A') }}</td>
-                                        <td class="pt-4">
+                                        <td class="pt-4 position-relative">
                                             <a href="{{ route('message#view',$message->id) }}" class="">View</a> /
-                                            <a href="" class="text-danger">Delete</a>
+                                            <a href="{{ route('message#delete',$message->id) }}" class="text-danger">Delete</a>
+                                            <span class="{{ $message->status<>'unread'?'d-none':''; }} translate-middle position-absolute top-0 start-100  p-2 bg-danger border border-light rounded-circle">
+                                              </span>
                                         </td>
+
                                     </tr>
                                 @endforeach
 
@@ -99,7 +102,33 @@
 
 
                       <div class="tab-pane fade pt-3" id="sentMessage">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td>From</td>
+                                    <td>Content</td>
+                                    <td>Time</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($sentMessage as $message)
+                                    <tr class=" ">
+                                        <td>
+                                           To : {{ $message->reciever->name }}
+                                        </td>
+                                        <td class="">{{ Str::words($message->content, 8, '...') }}</td>
+                                        <td class="">{{ $message->created_at->format('h:i A') }}</td>
+                                        <td class="">
+                                            <a href="{{ route('message#viewMyMessage',$message->id) }}" class="">View</a> /
+                                            <a href="{{ route('message#delete',$message->id) }}" class="text-danger">Delete</a>
+                                        </td>
 
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
 
                       </div>
 

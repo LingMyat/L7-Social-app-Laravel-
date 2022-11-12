@@ -21,25 +21,13 @@
                             <a href="{{ route('message#index') }}" class="btn btn-default"><i class="bi bi-arrow-left"></i> Back</a>
                         </div>
                         <div class=" pl-2">
-                            @if ($message->sender->image == Null)
-                                <a href="{{ route('user#profile',$message->sender->id) }}">
-                                    <img style="width: 50px;height:50px;" class="rounded-circle me-1" src="{{ asset('storage/user (3).jpg') }}" alt="">
-                                </a>
-                            @else
-                            <a href="{{ route('user#profile',$message->sender->id) }}">
-                                <img style="width: 50px;height:50px;" class="rounded-circle me-1" src="{{ asset('storage/'.$message->sender->image) }}" alt="">
-                            </a>
-                            @endif
-                                <b>{{ $message->sender->name }}</b>
+                               To : <b>{{ $message->reciever->name }}</b>
                             <small class=" float-end pt-2">{{ $message->created_at->format('d/m/Y h:i A') }}</small>
                         </div>
                         <div class="p-5">
                             <p class="mb-4 fst-italic">
                                 {{ $message->content }}
                             </p>
-                            <a class="btn btn-outline-secondary rounded-5 px-3 py-1" href="{{ route('message#sendPage',$message->sender_id) }}"><i class="bi bi-arrow-90deg-left"></i> Reply</a> to <small><b>{{ $message->sender->email }}</b></small>
-
-
                         </div>
                   </div>
                 </div>
@@ -49,18 +37,5 @@
         </section>
     </main><!-- End #main -->
 @endsection
-@section('script')
-    <script>
-        $(document).ready(function(){
 
-            $.ajax({
-                type : "get",
-                url : '/message/read',
-                data : {id : $('#msgId').val()},
-                dataType : 'json',
-
-            })
-        })
-    </script>
-@endsection
 

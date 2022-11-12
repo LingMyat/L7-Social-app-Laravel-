@@ -93,5 +93,9 @@ Route::middleware([
         Route::get('index','index')->name('message#index');
         Route::post('send','sendMessage')->name('message#send');
         Route::get('view/{id}','viewMessage')->name('message#view');
+        Route::get('sendPage/{id}','messageSendPage')->name('message#sendPage');
+        Route::get('delete/{id}','deleteMessage')->name('message#delete');
+        Route::get('read','readMessage');
+        Route::get('view/message/{id}','viewMyMessage')->name('message#viewMyMessage');
     });
 });
