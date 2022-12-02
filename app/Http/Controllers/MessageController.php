@@ -12,9 +12,7 @@ class MessageController extends Controller
 {
     //index
     public function index(){
-        $unRead = Message::where('reciever_id',auth()->id())
-        ->where('status','unread')
-        ->get();
+        $unRead = messageNoti();
 
         $allMessages = Message::where('reciever_id',auth()->id())
         ->orderBy('id','desc')
@@ -24,9 +22,10 @@ class MessageController extends Controller
         ->orderBy('id','desc')
         ->get();
 
-        $friends = FriendRequest::where('reciever_id',auth()->id())
-        ->where('status','fri')
-        ->get();
+        $friends = FriendRequest::where([
+            'reciever_id'=>auth()->id(),
+            'status'=>'fri'
+        ])->get();
         return view('user.message.index',compact('friends','allMessages','unRead','sentMessage'));
     }
     //sendMessage

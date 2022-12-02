@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\PasswordChangeRequest;
 use App\Models\FriendRequest;
+use App\Models\Message;
 
 class UserController extends Controller
 {
@@ -17,37 +18,53 @@ class UserController extends Controller
     public function userHome(){
         $posts = Post::when(request('search'),function($data){
             $data->where('title','like','%'.request('search').'%');
-        })
-        ->orderBy('id','desc')->paginate(6);
+        })->orderBy('id','desc')->paginate(6);
         return view('user.home',compact('posts'));
     }
     //user profile
     public function profile(User $id){
-        $friendRequestOtherProfile = FriendRequest::where('sender_id',$id->id)
-        ->where('reciever_id',auth()->id())
-        ->where('status','pending')
-        ->first();
-        // dd($friendRequestOtherProfile->toArray());
-        $friendRequest = FriendRequest::where('reciever_id',$id->id)
-        ->where('status','pending')
-        ->get();
+        $friendRequestOtherProfile = FriendRequest::where([
+            'sender_id'=>$id->id,
+            'reciever_id'=>auth()->id(),
+            'status'=>'pending'
+        ])->first();
 
-        $friends = FriendRequest::where('reciever_id',$id->id)
-        ->where('status','fri')
-        ->get();
+        $friendRequestOtherProfile2 = FriendRequest::where([
+            'sender_id'=>auth()->id(),
+            'reciever_id'=>$id->id,
+            'status'=>'pending'
+        ])->first();
+
+        $friendRequest = FriendRequest::where([
+            'reciever_id'=>$id->id,
+            'status'=>'pending'
+        ])->get();
+
+        $friends = FriendRequest::where([
+            'reciever_id'=>$id->id,
+            'status'=>'fri'
+        ])->get();
+
         $friendRequestValues = [];
         $friendsValues = [];
+        $friendRequestOtherProfileValues= true;
+        $friendRequestOtherProfile2Value = true;
         foreach ($friendRequest as $row) {
             array_push($friendRequestValues,$row->sender_id);
         }
+
         foreach ($friends as $row) {
             array_push($friendsValues,$row->sender_id);
         }
+
         if (empty($friendRequestOtherProfile)) {
-            $friendRequestOtherProfileValues = [];
-        } else {
-            $friendRequestOtherProfileValues=$friendRequestOtherProfile->reciever_id;
+            $friendRequestOtherProfileValues = false;
         }
+
+        if (empty($friendRequestOtherProfile2)) {
+            $friendRequestOtherProfile2Value = false;
+        }
+
         return view('User.account.profile',
         [
             'user'=>$id,
@@ -56,7 +73,8 @@ class UserController extends Controller
             'friends'=>$friends,
             'friendsValues'=>$friendsValues,
             'friendRequestOtherProfile'=>$friendRequestOtherProfile,
-            'friendRequestOtherProfileValues'=>$friendRequestOtherProfileValues
+            'friendRequestOtherProfileValues'=>$friendRequestOtherProfileValues,
+            'friendRequestOtherProfile2Value'=>$friendRequestOtherProfile2Value,
         ]);
     }
     //user profileUpdate
@@ -92,6 +110,15 @@ class UserController extends Controller
         ]);
         return response()->json(['status'=>'success'],201);
     }
+    //cancelRequest
+    public function cancelRequest($id){
+        FriendRequest::where([
+            'reciever_id'=>$id,
+            'sender_id'=>auth()->id(),
+            'status'=>'pending'
+        ])->delete();
+        return response()->json(['status'=>'success',200]);
+    }
     //respondFriend
     public function respondFriend(Request $request){
         FriendRequest::where('id',$request->id)->update(['status'=>'fri']);
@@ -119,8 +146,14 @@ class UserController extends Controller
     }
     //unFriend
     public function unFriend(Request $request){
-        FriendRequest::where('sender_id',$request->user1)->where('reciever_id',$request->user2)->delete();
-        FriendRequest::where('sender_id',$request->user2)->where('reciever_id',$request->user1)->delete();
+        FriendRequest::where([
+            'sender_id'=>$request->user1,
+            'reciever_id'=>$request->user2
+        ])->delete();
+        FriendRequest::where([
+            'sender_id'=>$request->user2,
+            'reciever_id'=>$request->user1
+        ])->delete();
         return response()->json(['status'=>'success'],200);
     }
 }

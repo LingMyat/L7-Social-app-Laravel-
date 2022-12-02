@@ -34,11 +34,25 @@
                     @else
                         <input type="hidden" id='responseId' value="0">
                     @endif
-                    @if (auth()->id()===$friendRequestOtherProfileValues)
+                    @if ($friendRequestOtherProfileValues)
                         <div class="col-8 {{ $user->id==auth()->id()?'d-none':'' }} {{ in_array(auth()->id(),$friendRequestValues)?'d-none':'' }} {{ in_array(auth()->id(),$friendsValues)?'d-none':'' }} mb-3 offset-2">
                             <button class="w-100 btn btn-primary" id="respondFriendBtn">
                                 Respond<i class="bi bi-check-lg"></i>
                             </button>
+                        </div>
+                    @elseif ($friendRequestOtherProfile2Value)
+                        <div class="col-8 {{ $user->id==auth()->id()?'d-none':'' }}  {{ in_array(auth()->id(),$friendsValues)?'d-none':'' }} mb-3 offset-2">
+                            <a
+                            href="javascript:void(0);"
+                            title="cancel-request"
+                            class="cancel-request-btn"
+                            id="cancel_request_btn"
+                            data-cancel-request-url="{{ route('user#cancelRequest',$user->id) }}"
+                            >
+                                <button class="w-100 btn btn-primary" >
+                                    Cancel Request<i class="bi bi-arrow-right"></i>
+                                </button>
+                            </a>
                         </div>
                     @else
                         <div class="col-8 {{ $user->id==auth()->id()?'d-none':'' }} {{ in_array(auth()->id(),$friendRequestValues)?'d-none':'' }} {{ in_array(auth()->id(),$friendsValues)?'d-none':'' }} mb-3 offset-2">
@@ -61,9 +75,11 @@
                                 <input type="hidden" class="reqId" value="{{ $friRequest->id }}">
                                 <input type="hidden" class="reciever_con" value="{{ $friRequest->sender_id }}">
                                 @if ($friRequest->sender->image == Null)
-                                    <img style="height: 50px;width: 50px;" src="{{ asset('storage/user (3).jpg') }}" alt="Profile" class="rounded-circle">
+                                    <a href="{{ route('user#profile',$friRequest->sender->id) }}"><img style="height: 50px;width: 50px;" src="{{ asset('storage/user (3).jpg') }}" alt="Profile" class="rounded-circle"></a>
                                 @else
-                                    <img style="height: 50px;width: 50px;" src="{{ asset('storage/'.$friRequest->sender->image) }}" alt="Profile" class="rounded-circle">
+                                    <a href="{{ route('user#profile',$friRequest->sender->id) }}">
+                                        <img style="height: 50px;width: 50px;" src="{{ asset('storage/'.$friRequest->sender->image) }}" alt="Profile" class="rounded-circle">
+                                    </a>
                                 @endif
                                 <span>{{ $friRequest->sender->name }}</span>
                                 <div class=" ms-5">
@@ -314,7 +330,9 @@
                                     <span>{{ $friend->sender->name }}</span>
                                     <div class=" ms-5">
                                         <button class="btn btn-secondary  btn-sm unfriend-btn">Unfriend</button>
-                                        <button class="btn btn-primary btn-sm message-btn">Message</button>
+                                        <a href="{{ route('message#sendPage',$friend->sender->id) }}">
+                                            <button class="btn btn-primary btn-sm message-btn">Message</button>
+                                        </a>
                                     </div>
                                 </div>
                             @endforeach
@@ -348,6 +366,20 @@
                         }
                     }
                 })
+            })
+
+            $('#cancel_request_btn').click(function(e){
+                e.preventDefault()
+                let cancelRequestUrl = $(this).data('cancel-request-url');
+                $.ajax({
+                    type: "get",
+                    url: cancelRequestUrl,
+                    success: function (response) {
+                        if (response.status == 'success') {
+                            location.reload();
+                        }
+                    }
+                });
             })
 
             $('#respondFriendBtn').click(function(){

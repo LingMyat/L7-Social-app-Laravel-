@@ -79,14 +79,15 @@
 
                       <div class="tab-pane fade  pt-3" id="composeMessage">
 
-                        <!-- Profile Edit Form -->
+                        <!-- send message form -->
                         <form action="{{ route('message#send') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
                                 <select class="form-select" name="reciever_id" aria-label="Default select example">
                                     <option value="">Select friend</option>
                                     @foreach ($friends as $friend)
-                                        <option value="{{ $friend->sender_id }}">{{ $friend->sender->name }}</option>
+                                        <option value="{{ $friend->sender_id }}">
+                                            {{ $friend->sender->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

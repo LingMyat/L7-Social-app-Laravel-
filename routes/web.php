@@ -59,6 +59,7 @@ Route::middleware([
         Route::post('profile/update{id}','profileUpdate')->name('user#profileUpdate');
         Route::post('change/password/{id}','changePassword')->name('user#changePassword');
         Route::get('addFriend','addFriend');
+        Route::get('cancelRequest/{reciever_id}','cancelRequest')->name('user#cancelRequest');
         Route::get('respondFriend','respondFriend');
         Route::get('confirmFri','confirmFri');
         Route::get('deleteFriReq','deleteFriReq');

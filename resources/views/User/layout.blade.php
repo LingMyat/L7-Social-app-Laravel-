@@ -139,10 +139,16 @@
           <span>Posts</span>
         </a>
       </li><!-- End Blank Page Nav -->
+      @php
+          $unRead = messageNoti();
+      @endphp
     <li class="nav-item">
-        <a class="nav-link active" href="{{ route('message#index') }}">
+        <a class="nav-link position-relative active" href="{{ route('message#index') }}">
             <i class="bi bi-chat-square-text-fill"></i>
-        <span>Message</span>
+            <span>Message</span>
+            <span class="{{ count($unRead)==0?'d-none':''; }} position-absolute top-0 start-100 translate-middle badge rounded bg-danger">
+                {{ count($unRead) }}
+            </span>
         </a>
     </li>
     </ul>

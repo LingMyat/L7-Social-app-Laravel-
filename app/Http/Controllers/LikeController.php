@@ -13,9 +13,11 @@ class LikeController extends Controller
             'post_id'=>$request->post_id,
             'user_id'=>$request->user_id
         ]);
+        return response()->json(['status'=>'success',200]);
     }
     //unLike Post
     public function unLike(Request $request){
         Like::where('post_id',$request->post_id)->where('user_id',$request->user_id)->delete();
+        return response()->json(['status'=>'success',200]);
     }
 }

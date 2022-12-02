@@ -40,8 +40,9 @@
 
                                     <div style="cursor: pointer" class="parent">
                                         <input type="hidden" class="postId" value="{{ $post->id }}">
+                                        <input type="hidden" class="reactCount" value="{{ reactCount($post->id) }}">
                                         <i class="{{ checkLiked($post->id)?'d-none':''; }} bi bi-heart like_btn"></i>
-                                        <i class="{{ checkLiked($post->id)?'':'d-none'; }} bi bi-heart-fill text-danger unlike_btn"></i>
+                                        <i class="{{ checkLiked($post->id)?'':'d-none'; }} bi bi-heart-fill text-danger unlike_btn"></i> <span class="react-count-container">{{ reactCount($post->id) }}</span>
                                     </div>
                                 </div>
 
@@ -73,6 +74,8 @@
             $('.like_btn').click(function(){
                 $parent = $(this).parents('.parent');
                 $postId = $parent.find('.postId').val();
+                $reactCount = $parent.find('.reactCount').val();
+                $reactCountContainer = $parent.find('.react-count-container');
                 $unLikeBtn = $parent.find('.unlike_btn');
                 $(this).addClass('d-none');
                 $unLikeBtn.removeClass('d-none');
@@ -84,12 +87,20 @@
                         user_id : $('#currentUser').val()
                     },
                     dataType : 'json',
-                })
+                    success : function(response){
+                        if (response.status == 'success') {
+                            $parent.find('.reactCount').val(Number($reactCount)+1);
+                            $reactCountContainer.html($parent.find('.reactCount').val());
+                        }
+                    }
+                });
             });
 
             $('.unlike_btn').click(function(){
                 $parent = $(this).parents('.parent');
                 $postId = $parent.find('.postId').val();
+                $reactCount = $parent.find('.reactCount').val();
+                $reactCountContainer = $parent.find('.react-count-container');
                 $LikeBtn = $parent.find('.like_btn');
                 $(this).addClass('d-none');
                 $LikeBtn.removeClass('d-none');
@@ -101,7 +112,13 @@
                         user_id : $('#currentUser').val()
                     },
                     dataType : 'json',
-                })
+                    success : function(response){
+                        if (response.status == 'success') {
+                            $parent.find('.reactCount').val($reactCount-1);
+                            $reactCountContainer.html($parent.find('.reactCount').val());
+                        }
+                    }
+                });
             });
         })
     </script>
