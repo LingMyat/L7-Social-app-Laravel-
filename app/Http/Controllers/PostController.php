@@ -24,9 +24,11 @@ class PostController extends Controller
     public function postCreate(PostRequest $request){
         $validated = $request->validated();
         if ($request->hasFile('image')) {
+            $user = User::find(1);
             $validated['image'] = fileStorage($request);
             Post::create($validated);
-            Notification::send(User::find(1), new PostCreatedNotification());
+            // $user->notify(new PostCreatedNotification());
+            // Notification::send(User::find(1), new PostCreatedNotification());
             return to_route('user#home');
         } else {
             return back()->with('imgNeed','The image field is required.');

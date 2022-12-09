@@ -29,7 +29,7 @@ class PostCreatedNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail','database'];
     }
 
     /**
@@ -43,7 +43,7 @@ class PostCreatedNotification extends Notification
         return (new MailMessage)
                     ->subject('Post Created')
                     ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('google.com'))
+                    ->action('Notification Action', url('/user/home'))
                     ->line('Thank you for using our application!');
     }
 
