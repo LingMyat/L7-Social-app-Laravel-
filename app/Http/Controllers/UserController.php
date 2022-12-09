@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Message;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\FriendRequest;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\PasswordChangeRequest;
-use App\Models\FriendRequest;
-use App\Models\Message;
 
 class UserController extends Controller
 {
@@ -19,6 +20,8 @@ class UserController extends Controller
         $posts = Post::when(request('search'),function($data){
             $data->where('title','like','%'.request('search').'%');
         })->orderBy('id','desc')->paginate(6);
+        // $slug = Str::slug('LARAVEL   9 Framework STR Helper Function slug', '-');
+        // dd($slug);
         return view('user.home',compact('posts'));
     }
     //user profile
