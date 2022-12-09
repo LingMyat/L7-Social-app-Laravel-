@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
+use App\Mail\PostStore;
 use App\Models\Comment;
+use App\Mail\PostDelete;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
-use App\Mail\PostDelete;
-use App\Mail\PostStore;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\PostCreatedNotification;
 
 class PostController extends Controller
 {
@@ -23,6 +26,7 @@ class PostController extends Controller
         if ($request->hasFile('image')) {
             $validated['image'] = fileStorage($request);
             Post::create($validated);
+            Notification::send(User::find(1), new PostCreatedNotification());
             return to_route('user#home');
         } else {
             return back()->with('imgNeed','The image field is required.');
