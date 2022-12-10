@@ -18,14 +18,14 @@ class Post extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
-    protected static function booted()
-    {
-        // static::created(function ($user) {
-        //     Mail::to('bizkits223@gmail.com')->send(new PostStore());
-        // });
+    // protected static function booted()
+    // {
+    //     static::created(function ($user) {
+    //         Mail::to('lingmyataung@outlook.com')->send(new PostStore());
+    //     });
 
-        // static::deleted(function ($user) {
-        //     Mail::to('bizkits223@gmail.com')->send(new PostDelete());
-        // });
-    }
+    //     static::deleted(function ($user) {
+    //         Mail::to('lingmyataung@outlook.com')->send(new PostDelete());
+    //     });
+    // }
 }
