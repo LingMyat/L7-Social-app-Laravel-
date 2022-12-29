@@ -1,4 +1,11 @@
 @extends('user.layout')
+@section('css')
+    <style>
+        p{
+            font-size: 25px !important;
+        }
+    </style>
+@endsection
 @section('search')
     <div class="search-bar">
         <form class="search-form d-flex align-items-center" method="POST" action="#">
@@ -11,7 +18,7 @@
     <main id="main" class="main">
         <section class="section">
             <div class="row">
-                <div class="col-8 offset-2">
+                <div class="col-10 offset-1">
                     <div class="card">
                         <div class="card-body py-3">
                           <div class="row">
@@ -29,27 +36,31 @@
                             @csrf
                             <input type="hidden" name="user_id" value="{{ auth()->id() }}">
                             <div class="row g-3 mb-3">
-                                <div class="col-12">
-                                    <label for="inputNanme4" class="form-label">Title</label>
-                                    <input type="text" value="{{ old('title',$post->title) }}" name='title' class="form-control" id="inputNanme4">
-                                    @error('title')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                  </div>
-                                  <div class="col-12">
-                                    <label for="inputPassword4" class="form-label">Content</label>
-                                    <textarea name="content" id="" class="form-control" cols="30" rows="8">{{ old('content',$post->content) }}</textarea>
-                                    @error('content')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                  </div>
-                                  <div class="col-12">
-                                    <img style="width:210px ;height:140px;" src="{{ asset('storage/'.$post->image) }}" alt="">
-                                    <label for="formFile" class="form-label">Image</label>
-                                    <input class="form-control mt-3" name='image' type="file" id="formFile">
-                                    @error('image')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                <div class="row col-6">
+                                    <div class="col-12">
+                                        <label for="inputNanme4" class="form-label">Title</label>
+                                        <input type="text" value="{{ old('title',$post->title) }}" name='title' class="form-control" id="inputNanme4">
+                                        @error('title')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                      </div>
+                                      <div class="col-12">
+                                        <label for="inputPassword4" class="form-label">Content</label>
+                                        <textarea name="content" id="" class="form-control" cols="30" rows="8">{{ old('content',$post->content) }}</textarea>
+                                        @error('content')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                      </div>
+                                </div>
+                                  <div class="row col-6" >
+                                    <div class="col-12">
+                                        <label for="formFile" class="form-label">Image</label>
+                                        <input type="file" class="form-control" name="image" id="image" data-max-file-size="1000K"
+                                            data-allowed-file-extensions='["png", "PNG", "jpg", "JPG", "jpeg", "JPEG"]' data-default-file="{{ asset('storage/'.$post->image) }}" >
+                                        @error('image')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                      </div>
                                   </div>
                             </div>
                             <button type="submit" class=" float-end btn btn-primary">Update</button>
@@ -62,4 +73,11 @@
             </div>
         </section>
     </main><!-- End #main -->
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function () {
+            $('#image').dropify()
+        });
+    </script>
 @endsection

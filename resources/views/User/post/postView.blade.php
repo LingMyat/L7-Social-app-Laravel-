@@ -31,7 +31,7 @@
                             <h4>Comments</h4>
                             @foreach ($comments as $comment)
                                 <div class="p-2">
-                                    <img style="width: 35px;height:35px;" class="rounded-circle" src="{{ asset($comment->user->media->image) }}" alt="">
+                                    <img style="width: 35px;height:35px;" class="rounded-circle" src="{{ asset($comment->user->media->image??'assets/theme/default_user/defuser.png') }}" alt="">
                                     <h6 class=" d-inline-block ms-1"><b>{{ $comment->user->name }}</b></h6>
                                     <small class="float-end">{{ $comment->created_at->diffForHumans() }}</small>
                                     <div class="d-flex align-items-center justify-content-between">
@@ -41,11 +41,11 @@
                                                 <button class="btn btn-sm btn-secondary " type="button" data-bs-toggle="dropdown" >
                                                   <i class="bi bi-three-dots"></i>
                                                 </button>
-                                                <div style="width: 300px" class="dropdown-menu p-2 shadow">
-                                                    <form action="{{ route('user#commentUpdate',$comment->id) }}" method="post">
+                                                <div style="width: 300px" class="dropdown-menu p-2 shadow bg-secondary-light">
+                                                    <form class="p-2 " action="{{ route('user#commentUpdate',$comment->id) }}" method="post">
                                                         @csrf
                                                         <input name="content" type="text" value="{{ $comment->content }}" class="mb-3 form-control form-control-sm cmtEdit">
-                                                        <button class=" btn btn-primary btn-sm update-btn">
+                                                        <button class=" btn btn-primary float-end btn-sm update-btn">
                                                             save
                                                         </button>
                                                     </form>

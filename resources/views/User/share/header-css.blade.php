@@ -13,8 +13,10 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 
 
+
   <!-- Template Main CSS File -->
   <link href="/assets/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset("assets/libs/dropify/dropify.min.css") }}">
     <style>
         .badge {
             z-index: 100;
@@ -25,3 +27,4 @@
             min-height: 100vh;
         }
     </style>
+@yield('css')
