@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('friend_requests', function (Blueprint $table) {
             $table->id();
-            $table->integer('sender_id');
-            $table->integer('reciever_id');
+            $table->unsignedBigInteger('sender_id')->nullable();
+            $table->foreign('sender_id')->references('id')->on('users')->onDelete('set null');
+            $table->unsignedBigInteger('reciever_id')->nullable();
+            $table->foreign('reciever_id')->references('id')->on('users')->onDelete('set null');
             $table->string('status');
             $table->timestamps();
         });

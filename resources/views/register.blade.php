@@ -9,7 +9,7 @@
         <p class="text-center small">Enter your personal details to create account</p>
       </div>
 
-      <form class="row g-3 needs-validation" action="{{ route('register') }}" method="post" novalidate>
+      <form class="row g-2 needs-validation" action="{{ route('register') }}" method="post" novalidate>
         @csrf
         <div class="col-12">
           <label for="yourName" class="form-label">Your Name</label>
@@ -49,8 +49,8 @@
 
         <div class="col-12">
             <label class="form-label">Your Gender</label>
-            <select class="form-select" name="gender" aria-label="Default select example">
-                <option value="">Choose your gender</option>
+            <select style="" class="form-select js-example-basic-single " name="gender" >
+                <option >Choose your gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
             </select>

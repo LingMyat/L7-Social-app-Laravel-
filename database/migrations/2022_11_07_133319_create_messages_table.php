@@ -16,9 +16,13 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->longText('content');
-            $table->integer('sender_id');
-            $table->integer('reciever_id');
+            $table->unsignedBigInteger('sender_id')->nullable();
+            $table->foreign('sender_id')->references('id')->on('users')->onDelete('set null');
+            $table->unsignedBigInteger('reciever_id')->nullable();
+            $table->foreign('reciever_id')->references('id')->on('users')->onDelete('set null');
             $table->string('status')->default('unread');
+            $table->boolean('active')->default(1)->comment('1 is Active, 0 is Unactive');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

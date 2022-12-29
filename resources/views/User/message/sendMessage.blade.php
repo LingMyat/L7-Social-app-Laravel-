@@ -28,15 +28,11 @@
                                     </div>
                                     <div class=" pl-2 mb-3">
 
-                                        @if ($reciever->image == Null)
+
                                             <a href="{{ route('user#profile',$reciever->id) }}">
-                                                <img style="width: 50px;height:50px;" class="rounded-circle me-1" src="{{ asset('storage/user (3).jpg') }}" alt="">
+                                                <img style="height: 50px;width: 50px;" src="{{ asset($reciever->media->image??'assets/theme/default_user/defuser.png') }}" alt="Profile" class="rounded-circle">
                                             </a>
-                                        @else
-                                        <a href="{{ route('user#profile',$reciever->id) }}">
-                                            <img style="width: 50px;height:50px;" class="rounded-circle me-1" src="{{ asset('storage/'.$reciever->image) }}" alt="">
-                                        </a>
-                                        @endif
+
                                             <b>{{ $reciever->name }}</b>
                                     </div>
                                     <div class="mb-3">

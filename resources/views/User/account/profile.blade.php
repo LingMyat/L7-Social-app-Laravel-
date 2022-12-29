@@ -16,11 +16,7 @@
                 <div class="card">
 
                   <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                    @if ($user->image == Null)
-                        <img src="{{ asset('storage/user (3).jpg') }}" alt="Profile" class="rounded-circle">
-                    @else
-                        <img src="{{ asset('storage/'.$user->image) }}" alt="Profile" class="rounded-circle">
-                    @endif
+                    <img alt="Profile" class="rounded-circle" src="{{ asset($user->media->image??'assets/theme/default_user/defuser.png') }}" alt="">
                     <h2>{{ $user->name }}</h2>
                     <h3>{{ $user->job }}</h3>
 
@@ -74,13 +70,7 @@
                             <div class="mb-2 parent">
                                 <input type="hidden" class="reqId" value="{{ $friRequest->id }}">
                                 <input type="hidden" class="reciever_con" value="{{ $friRequest->sender_id }}">
-                                @if ($friRequest->sender->image == Null)
-                                    <a href="{{ route('user#profile',$friRequest->sender->id) }}"><img style="height: 50px;width: 50px;" src="{{ asset('storage/user (3).jpg') }}" alt="Profile" class="rounded-circle"></a>
-                                @else
-                                    <a href="{{ route('user#profile',$friRequest->sender->id) }}">
-                                        <img style="height: 50px;width: 50px;" src="{{ asset('storage/'.$friRequest->sender->image) }}" alt="Profile" class="rounded-circle">
-                                    </a>
-                                @endif
+                                <a href="{{ route('user#profile',$friRequest->sender->id) }}"><img style="height: 50px;width: 50px;" src="{{ asset($friRequest->sender->media->image??'assets/theme/default_user/defuser.png') }}" alt="Profile" class="rounded-circle"></a>
                                 <span>{{ $friRequest->sender->name }}</span>
                                 <div class=" ms-5">
                                     <button class="btn btn-primary btn-sm confirm-btn">Confirm</button>
@@ -165,11 +155,7 @@
                               <div class="row mb-3">
                                 <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                 <div class="col-md-8 col-lg-9">
-                                    @if ($user->image == Null)
-                                        <img src="{{ asset('storage/user (3).jpg') }}" alt="Profile">
-                                    @else
-                                        <img src="{{ asset('storage/'.$user->image) }}" alt="Profile">
-                                    @endif
+                                    <img alt="Profile" class="rounded-circle" src="{{ asset(auth()->user()->media->image??'assets/theme/default_user/defuser.png') }}" alt="">
                                   <div class="pt-3">
                                     <input type="file" class="form-control" name="image" id="">
                                     @error('image')
@@ -322,11 +308,7 @@
                                 <div class="mb-2 parent">
                                     <input type="hidden" class="user1" value="{{ $friend->sender_id }}">
                                     <input type="hidden" class="user2" value="{{ auth()->id() }}">
-                                    @if ($friend->sender->image == Null)
-                                        <img style="height: 50px;width: 50px;" src="{{ asset('storage/user (3).jpg') }}" alt="Profile" class="rounded-circle">
-                                    @else
-                                        <img style="height: 50px;width: 50px;" src="{{ asset('storage/'.$friend->sender->image) }}" alt="Profile" class="rounded-circle">
-                                    @endif
+                                    <img style="height: 50px;width: 50px;" src="{{ asset($friend->sender->media->image??'assets/theme/default_user/defuser.png') }}" alt="Profile" class="rounded-circle">
                                     <span>{{ $friend->sender->name }}</span>
                                     <div class=" ms-5">
                                         <button class="btn btn-secondary  btn-sm unfriend-btn">Unfriend</button>

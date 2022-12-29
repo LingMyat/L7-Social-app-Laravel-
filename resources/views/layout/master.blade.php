@@ -67,21 +67,14 @@
         <li class="nav-item dropdown pe-5">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            @if (auth()->user()->image == Null)
-                <img alt="Profile" class="rounded-circle" src="{{ asset('storage/user (3).jpg') }}" alt="">
-            @else
-                <img alt="Profile" class="rounded-circle" src="{{ asset('storage/'.auth()->user()->image) }}" alt="">
-            @endif
+            <img alt="Profile" class="rounded-circle" src="{{ asset(auth()->user()->image??'assets/theme/default_user/defuser.png') }}" alt="">
+
             <span class="d-none d-md-block dropdown-toggle ps-2">{{ auth()->user()->name }}</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-                @if (auth()->user()->image == Null)
-                <img style="width: 50px;height:50px;" alt="Profile" class="rounded-circle" src="{{ asset('storage/user (3).jpg') }}" alt="">
-            @else
-                <img style="width: 50px;height:50px;" alt="Profile" class="rounded-circle" src="{{ asset('storage/'.auth()->user()->image) }}" alt="">
-            @endif
+                <img style="width: 50px;height:50px;" alt="Profile" class="rounded-circle" src="{{ asset(auth()->user()->image??'assets/theme/default_user/defuser.png') }}" alt="">
               <h6>{{ auth()->user()->name }}</h6>
               <span>{{ auth()->user()->job }}</span>
             </li>

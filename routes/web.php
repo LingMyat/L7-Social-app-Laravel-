@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)
 ->group(function(){
-    Route::redirect('/','loginPage');
-    Route::get('loginPage','loginPage')->name('auth#loginPage');
-    Route::get('registerPage','registerPage')->name('auth#registerPage');
+    Route::redirect('/','loginPage')->middleware('userIsAuthenticated');
+    Route::get('loginPage','loginPage')->name('auth#loginPage')->middleware('userIsAuthenticated');
+    Route::get('registerPage','registerPage')->name('auth#registerPage')->middleware('userIsAuthenticated');
     Route::get('auth/dashBoard','dashBoard')->name('auth#dashboard');
 });
 //Logout

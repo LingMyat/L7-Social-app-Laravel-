@@ -21,13 +21,14 @@ return new class extends Migration
             $table->string('address');
             $table->string('gender');
             $table->string('bio')->nullable();
-            $table->string('image')->nullable();
             $table->string('role')->default('user');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
+            $table->boolean('active')->default(0)->comment('1 is Active, 0 is deactivate ,2 is deleted');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

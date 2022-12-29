@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
-            $table->string('title');
             $table->string('image');
-            $table->longText('content');
-            $table->boolean('active')->default(1)->comment('1 is Active, 0 is Unactive');
-            $table->timestamp('deleted_at')->nullable();
+            $table->unsignedBigInteger('mediable_id')->nullable();
+            $table->string('mediable_type')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('media');
     }
 };

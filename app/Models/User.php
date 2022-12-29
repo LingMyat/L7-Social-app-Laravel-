@@ -27,13 +27,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'image',
         'phone',
         'address',
         'bio',
         'gender',
         'role',
         'job',
+        'deleted_at',
+        'active'
     ];
 
     /**
@@ -65,4 +66,15 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    const UPLOAD_PATH = "upload/user";
+
+    public function media(){
+        return $this->morphOne(Media::class ,'mediable');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where("active",true);
+    }
 }

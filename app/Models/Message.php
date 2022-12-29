@@ -9,8 +9,12 @@ class Message extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'content','sender_id','reciever_id','status'
+        'content','sender_id','reciever_id','status','deleted_at','active'
     ];
+    public function scopeActive($query)
+    {
+        return $query->where("active",true);
+    }
     public function sender(){
         return $this->belongsTo(User::class,'sender_id');
     }

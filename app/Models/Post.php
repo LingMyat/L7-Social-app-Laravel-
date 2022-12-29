@@ -12,8 +12,16 @@ class Post extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id','content','title','image'
+        'user_id','content','title','image','deleted_at','active'
     ];
+
+    const UPLOAD_PATH = "upload/post";
+
+    public function scopeActive($query)
+    {
+        return $query->where("active",true);
+    }
+
     public function user(){
         return $this->belongsTo(User::class,'user_id');
     }

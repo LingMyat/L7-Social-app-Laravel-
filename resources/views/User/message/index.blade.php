@@ -53,11 +53,7 @@
                                 @foreach ($allMessages as $message)
                                     <tr class=" ">
                                         <td>
-                                            @if ($message->sender->image == Null)
-                                                <img style="width: 50px;height:50px;" class="rounded-circle me-1" src="{{ asset('storage/user (3).jpg') }}" alt="">
-                                            @else
-                                                <img style="width: 50px;height:50px;" class="rounded-circle me-1" src="{{ asset('storage/'.$message->sender->image) }}" alt="">
-                                            @endif
+                                            <img style="height: 50px;width: 50px;" src="{{ asset($message->sender->media->image??'assets/theme/default_user/defuser.png') }}" alt="Profile" class="rounded-circle">
                                             {{ $message->sender->name }}
                                         </td>
                                         <td class="pt-4">{{ Str::words($message->content, 8, '...') }}</td>

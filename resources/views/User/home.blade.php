@@ -26,23 +26,17 @@
                               <div class="row">
                                 <div class="col-12 mt-3 d-flex gap-3 justify-content-between align-items-center">
                                     <div class="">
-                                        @if ($post->user->image == Null)
                                         <a href="{{ route('user#profile',$post->user_id) }}">
-                                            <img style="width: 40px;height:40px;" class="rounded-circle" src="{{ asset('storage/user (3).jpg') }}" alt="">
+                                            <img style="width: 40px;height:40px;" class="rounded-circle" src="{{ asset($post->user->media->image??'assets/theme/default_user/defuser.png') }}" alt="">
                                         </a>
-                                     @else
-                                        <a href="{{ route('user#profile',$post->user_id) }}">
-                                            <img style="width: 40px;height:40px;" class="rounded-circle" src="{{ asset('storage/'.$post->user->image) }}" alt="">
-                                        </a>
-                                    @endif
-                                    <div class=" d-inline">{{ $post->user->name }}</div>
+                                    <b><i><div class=" d-inline">{{ $post->user->name }}</div></i></b>
                                     </div>
 
                                     <div style="cursor: pointer" class="parent">
                                         <input type="hidden" class="postId" value="{{ $post->id }}">
                                         <input type="hidden" class="reactCount" value="{{ reactCount($post->id) }}">
                                         <i class="{{ checkLiked($post->id)?'d-none':''; }} bi bi-heart like_btn"></i>
-                                        <i class="{{ checkLiked($post->id)?'':'d-none'; }} bi bi-heart-fill text-danger unlike_btn"></i> <span class="react-count-container">{{ reactCount($post->id) }}</span>
+                                        <i class="{{ checkLiked($post->id)?'':'d-none'; }} bi bi-heart-fill text-danger unlike_btn"></i> <b><span class="react-count-container">{{ reactCount($post->id) }}</span></b>
                                     </div>
                                 </div>
 

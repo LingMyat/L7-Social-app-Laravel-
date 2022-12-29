@@ -11,8 +11,13 @@ class Comment extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'post_id','user_id','content'
+        'post_id','user_id','content','deleted_at','active'
     ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('active',true);
+    }
 
     public function post()
     {

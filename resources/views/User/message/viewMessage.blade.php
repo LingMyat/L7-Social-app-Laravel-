@@ -21,15 +21,9 @@
                             <a href="{{ route('message#index') }}" class="btn btn-default"><i class="bi bi-arrow-left"></i> Back</a>
                         </div>
                         <div class=" pl-2">
-                            @if ($message->sender->image == Null)
                                 <a href="{{ route('user#profile',$message->sender->id) }}">
-                                    <img style="width: 50px;height:50px;" class="rounded-circle me-1" src="{{ asset('storage/user (3).jpg') }}" alt="">
+                                    <img style="height: 50px;width: 50px;" src="{{ asset($message->sender->media->image??'assets/theme/default_user/defuser.png') }}" alt="Profile" class="rounded-circle">
                                 </a>
-                            @else
-                            <a href="{{ route('user#profile',$message->sender->id) }}">
-                                <img style="width: 50px;height:50px;" class="rounded-circle me-1" src="{{ asset('storage/'.$message->sender->image) }}" alt="">
-                            </a>
-                            @endif
                                 <b>{{ $message->sender->name }}</b>
                             <small class=" float-end pt-2">{{ $message->created_at->format('d/m/Y h:i A') }}</small>
                         </div>

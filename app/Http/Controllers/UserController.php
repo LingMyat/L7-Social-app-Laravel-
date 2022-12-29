@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Media;
 use App\Models\Message;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\FriendRequest;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\PasswordChangeRequest;
@@ -84,24 +86,32 @@ class UserController extends Controller
     public function profileUpdate(User $id,UserRequest $request){
         $validated = $request->validated();
         if ($request->hasFile('image')) {
-            $validated['image']=fileStorage($request);
+            $path = User::UPLOAD_PATH . '/' . date('Y'). "/" . date('m') . '/';
+            $fileName = uniqid().time().'.'.$request->file('image')->extension();
+            $request->file('image')->move(public_path($path), $fileName);
+            Media::create([
+                'image'=> $path . $fileName,
+                'mediable_id'=>$id->id,
+                'mediable_type'=>User::class
+            ]);
             if ($id->image != Null) {
-                Storage::delete('public/'.$id->image);
+                $media = Media::findOrFail('mediable_id',$id->id);
+                File::delete(public_path($media->image));
             }
         } else {
             $validated['image']=$id->image;
         }
         $id->update($validated);
-        return to_route('user#profile',$id->id);
+        return to_route('user#profile',$id->id)->with('success','Account Updated Successful');
     }
     //changePassword
     public function changePassword(User $id,PasswordChangeRequest $request){
         $validated=$request->validated();
         if (Hash::check($request->current_psw,$id->password)) {
             $id->update(['password'=>Hash::make($request->new_psw)]);
-            return to_route('user#profile',$id->id);
+            return to_route('user#profile',$id->id)->with('success',"Password Updated Successful.");
         } else {
-            return back()->with('notMatch','Please enter a valid password');
+            return back()->with('error','Please enter a valid Current Password');
         }
     }
     //addFriend

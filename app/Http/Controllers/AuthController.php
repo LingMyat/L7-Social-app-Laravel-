@@ -18,14 +18,14 @@ class AuthController extends Controller
     //Logout
     public function logout(){
         Auth::logout();
-        return to_route('auth#loginPage');
+        return to_route('auth#loginPage')->with('success','Logout Success');
     }
     //Dashboard
     public function dashBoard(){
         if (auth()->user()->role == 'admin') {
             return to_route('admin#userList');
         } elseif(auth()->user()->role == 'user') {
-            return to_route('user#home');
+            return to_route('user#home')->with('success','Login Success');
         }
     }
 }
