@@ -26,6 +26,10 @@ class Post extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
+    public function gallery(){
+        return $this->morphMany(Media::class,'mediable');
+    }
+
     // protected static function booted()
     // {
     //     static::created(function ($user) {

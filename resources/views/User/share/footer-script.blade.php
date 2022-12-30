@@ -15,6 +15,10 @@
 
 <!-- Template Main JS File -->
 <script src="/assets/js/main.js"></script>
+<script src="{{ asset('assets/theme/parsleyjs/parsleyjs.min.js') }}"></script>
+<script src="{{ asset('assets/theme/NiceSelect/js/jquery.nice-select.js') }}"></script>
+<script src="{{ asset('assets/theme/bootstrap-fileinput/fileinput.min.js') }}"></script>
+
 @yield('script')
 
 

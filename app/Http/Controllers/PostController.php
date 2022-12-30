@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Media;
 use App\Mail\PostStore;
 use App\Models\Comment;
 use App\Mail\PostDelete;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Notification;
@@ -22,17 +24,20 @@ class PostController extends Controller
     }
     //post Create
     public function postCreate(PostRequest $request){
+
         $validated = $request->validated();
-        if ($request->hasFile('image')) {
-            $user = User::find(1);
-            $validated['image'] = fileStorage($request);
-            Post::create($validated);
-            // $user->notify(new PostCreatedNotification());
-            // Notification::send(User::find(1), new PostCreatedNotification());
-            return to_route('user#home');
-        } else {
-            return back()->with('imgNeed','The image field is required.');
+        $post = Post::create($validated);
+        $path = Post::UPLOAD_PATH . "/" .date('Y').'/'.date('m').'/';
+        foreach ($request->image_galleries as $key => $image) {
+            $fileName = uniqid().time().'.'.$image->extension();
+            $image->move(public_path($path),$fileName);
+            Media::create([
+                'image'=>$path.$fileName,
+                'mediable_id'=>$post->id,
+                'mediable_type'=>Post::class
+            ]);
         }
+        return to_route('user#home')->with('success',"Post Created Successful!");
     }
     //postView
     public function postView(Post $id){
@@ -60,5 +65,11 @@ class PostController extends Controller
         $id->delete();
         Storage::delete('public/'.$id->image);
         return to_route('user#home');
+    }
+    public function deleteMediaPhoto(Media $id){
+        File::delete(public_path($id->image));
+        $id->delete();
+
+        return redirect()->back();
     }
 }

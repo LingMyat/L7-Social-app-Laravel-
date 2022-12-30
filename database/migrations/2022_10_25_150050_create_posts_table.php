@@ -18,7 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->string('title');
-            $table->string('image');
             $table->longText('content');
             $table->boolean('active')->default(1)->comment('1 is Active, 0 is Unactive');
             $table->timestamp('deleted_at')->nullable();

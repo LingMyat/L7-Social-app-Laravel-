@@ -26,6 +26,10 @@ function reactCount($id){
 function messageNoti(){
     return Message::where([
         'reciever_id'=>auth()->id(),
-        'status'=>'unread'
-    ])->get();
+    ])->status('unread')->get();
 }
+
+// function desc($query)
+// {
+//     return $query->orderBy('id','desc');
+// }

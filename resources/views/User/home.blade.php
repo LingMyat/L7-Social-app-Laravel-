@@ -13,14 +13,14 @@
             <div class="row">
                 <div class="col-lg-3 mb-3 offset-lg-9">
                     <a href="{{ route('admin#postList') }}" class="btn btn-danger {{ auth()->user()->role=='admin'?'':'d-none' }}">Back to Admin</a>
-                    <a href="{{ route('user#postCreatePage') }}" class="{{ auth()->user()->role=='admin'?'':'float-end' }} btn btn-success">Add Post+</a>
+                    <a href="{{ route('user#postCreatePage') }}" class="{{ auth()->user()->role=='admin'?'':'float-end' }} btn btn-sm btn-blue">+Add Post</a>
                 </div>
                 <input type="hidden" id="currentUser" value="{{ auth()->id() }}">
                 @foreach ($posts as $post)
                     <div class="col-md-6 col-lg-4">
                         <div class="card">
                             <a href="{{ route('user#postView',$post->id) }}">
-                                <img src="{{ asset('storage/'.$post->image) }}" class="card-img-top" alt="...">
+                                <img src="{{ asset($post->gallery[0]->image) }}" class="card-img-top" alt="...">
                             </a>
                             <div class="card-body">
                               <div class="row">
@@ -45,7 +45,7 @@
                                         <h5 class="py-2 card-title">{{ $post->title }}</h5>
                                     </a>
                                 </div>
-                                <div class="col-4 pt-2 px-5 d-flex gap-2 justify-content-end @if ($post->user_id !== auth()->id()) d-none @endif">
+                                <div class="col-4 pt-2 px-1 d-flex gap-1 justify-content-end @if ($post->user_id !== auth()->id()) d-none @endif">
                                     <a href="{{ route('user#postEdit',$post->id) }}"><i class="bi bi-pencil"></i></a>
                                     <a href="{{ route('user#postDelete',$post->id) }}"><i class="bi bi-trash"></i></a>
                                 </div>

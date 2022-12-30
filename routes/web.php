@@ -64,6 +64,7 @@ Route::middleware([
         Route::get('confirmFri','confirmFri');
         Route::get('deleteFriReq','deleteFriReq');
         Route::get('unFriend','unFriend');
+        Route::get('forget-session','forgetSession');
     });
     // Post Section
     Route::controller(PostController::class)
@@ -75,6 +76,7 @@ Route::middleware([
         Route::get('edit/{id}','postEdit')->name('user#postEdit');
         Route::post('update/{id}','postUpdate')->name('user#postUpdate');
         Route::get('delete/{id}','postDelete')->name('user#postDelete');
+        Route::get('media/{id}','deleteMediaPhoto')->name('user#deletePostMediaPhoto');
     });
     Route::controller(CommentController::class)
     ->prefix('comment')

@@ -1,4 +1,12 @@
 @extends('User.layout')
+@section('css')
+    <style>
+        .nice-select.open .list
+        {
+            width: 100%;
+        }
+    </style>
+@endsection
 @section('search')
     <div class="search-bar">
         <form class="search-form d-flex align-items-center" action="#">
@@ -37,7 +45,7 @@
                             </button>
                         </div>
                     @elseif ($friendRequestOtherProfile2Value)
-                        <div class="col-8 {{ $user->id==auth()->id()?'d-none':'' }}  {{ in_array(auth()->id(),$friendsValues)?'d-none':'' }} mb-3 offset-2">
+                        <div class="col-12 {{ $user->id==auth()->id()?'d-none':'' }}  {{ in_array(auth()->id(),$friendsValues)?'d-none':'' }} mb-3">
                             <a
                             href="javascript:void(0);"
                             title="cancel-request"
@@ -49,6 +57,17 @@
                                     Cancel Request<i class="bi bi-arrow-right"></i>
                                 </button>
                             </a>
+                        </div>
+                    @elseif ($friendStatus)
+                        <div class="col-8 {{ $user->id==auth()->id()?'d-none':'' }} mb-3 offset-2 parent">
+                            <input type="hidden" class="user1" value="{{ $user->id }}">
+                                    <input type="hidden" class="user2" value="{{ auth()->id() }}">
+                            <div class=" w-100 row">
+                                <button class="btn btn-secondary btn-sm col-sm-6 mb-2 col-12 unfriend-btn">Unfriend</button>
+                                <a href="{{ route('message#sendPage',$user->id) }}" class="col-sm-5 offset-sm-1 col-12 btn btn-sm btn-primary btn  message-btn">
+                                    Message
+                                </a>
+                            </div>
                         </div>
                     @else
                         <div class="col-8 {{ $user->id==auth()->id()?'d-none':'' }} {{ in_array(auth()->id(),$friendRequestValues)?'d-none':'' }} {{ in_array(auth()->id(),$friendsValues)?'d-none':'' }} mb-3 offset-2">
@@ -188,9 +207,10 @@
                               <div class="row mb-3">
                                 <label for="company" class="col-md-4 col-lg-3 col-form-label">Gender</label>
                                 <div class="col-md-8 col-lg-9">
-                                    <select class="form-select" name='gender' aria-label="Default select example">
+                                    <select class="w-100" id="nice_select" name='gender' aria-label="Default select example">
                                         <option value="male" {{ $user->gender=='male'?'selected':''; }}>Male</option>
                                         <option value="female"{{ $user->gender=='female'?'selected':''; }}>Female</option>
+                                        <option value="rather not or say"{{ $user->gender=='rather not or say'?'selected':''; }}>Rather Not or Say</option>
                                     </select>
                                     @error('gender')
                                         <small class="text-danger">{{ $message }}</small>
@@ -333,6 +353,13 @@
 @section("script")
     <script>
         $(document).ready(function(){
+            setTimeout(() => {
+                $.ajax({
+                    type: "get",
+                    url: "/user/forget-session",
+                });
+            }, 100);
+            $("#nice_select").niceSelect();
             $('#addFriendBtn').click(function(){
                 $.ajax({
                     type : 'get',

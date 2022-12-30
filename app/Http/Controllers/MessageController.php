@@ -24,14 +24,14 @@ class MessageController extends Controller
 
         $friends = FriendRequest::where([
             'reciever_id'=>auth()->id(),
-            'status'=>'fri'
-        ])->get();
+        ])->status('fri')->get();
         return view('user.message.index',compact('friends','allMessages','unRead','sentMessage'));
     }
     //sendMessage
     public function sendMessage(MessageRequest $request){
-        Message::create($request->validated());
-        return to_route('message#index');
+        $data = Message::create($request->validated());
+        $name = $data->reciever->name;
+        return to_route('message#index')->with('success',"Message Sent to $name!");
     }
     //viewMessage
     public function viewMessage(Message $id){
@@ -48,7 +48,7 @@ class MessageController extends Controller
     //deleteMessage
     public function deleteMessage(Message $id){
         $id->delete();
-        return to_route('message#index');
+        return to_route('message#index')->with('success','Message Deleted Success!');
     }
     //readMessage
     public function readMessage(Request $request){

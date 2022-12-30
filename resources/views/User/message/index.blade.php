@@ -1,4 +1,16 @@
 @extends('User.layout')
+@section('css')
+    <style>
+        .nice-select
+        {
+            margin: 15px 0px;
+        }
+        .nice-select.open .list
+        {
+            width: 100%;
+        }
+    </style>
+@endsection
 @section('search')
     <div class="search-bar">
         <form class="search-form d-flex align-items-center" action="#">
@@ -79,7 +91,8 @@
                         <form action="{{ route('message#send') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
-                                <select class="form-select" name="reciever_id" aria-label="Default select example">
+                                <div><b>To : <span id="reciever"></span></b></div>
+                                <select class="w-100" id="nice_select" name="reciever_id" aria-label="Default select example">
                                     <option value="">Select friend</option>
                                     @foreach ($friends as $friend)
                                         <option value="{{ $friend->sender_id }}">
@@ -87,7 +100,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="mb-3">
+                            <div class="my-3">
                                 <textarea name="content" placeholder="Subject.." class="form-control" id="" rows="9"></textarea>
                             </div>
                             <input type="hidden" name="sender_id" value="{{ auth()->id() }}">
@@ -139,4 +152,16 @@
         </section>
     </main><!-- End #main -->
 @endsection
-
+@section('script')
+    <script>
+        $(document).ready(function () {
+            $('#nice_select').niceSelect();
+            $('#nice_select').change(function (e) {
+                e.preventDefault();
+                $('#reciever').html(
+                    $(this).children("option:selected").html()=='Select friend'?'':$(this).children("option:selected").html()
+                )
+            });
+        });
+    </script>
+@endsection
