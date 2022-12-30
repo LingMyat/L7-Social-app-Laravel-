@@ -21,7 +21,7 @@ class UserController extends Controller
     public function userHome(){
         $posts = Post::when(request('search'),function($data){
             $data->where('title','like','%'.request('search').'%');
-        })->orderBy('id','desc')->paginate(6);
+        })->orderBy('id','desc')->active()->paginate(6);
         // $slug = Str::slug('LARAVEL   9 Framework STR Helper Function slug', '-');
         // dd($slug);
         return view('user.home',compact('posts'));

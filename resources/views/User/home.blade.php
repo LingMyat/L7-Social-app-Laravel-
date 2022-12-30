@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-lg-3 mb-3 offset-lg-9">
                     <a href="{{ route('admin#postList') }}" class="btn btn-danger {{ auth()->user()->role=='admin'?'':'d-none' }}">Back to Admin</a>
-                    <a href="{{ route('user#postCreatePage') }}" class="{{ auth()->user()->role=='admin'?'':'float-end' }} btn btn-success">Add Post+</a>
+                    <a href="{{ route('user#postCreatePage') }}" class="{{ auth()->user()->role=='admin'?'':'float-end' }} btn btn-sm btn-blue">+Add Post</a>
                 </div>
                 <input type="hidden" id="currentUser" value="{{ auth()->id() }}">
                 @foreach ($posts as $post)

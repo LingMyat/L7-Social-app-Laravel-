@@ -26,8 +26,14 @@ class PostRequest extends FormRequest
         return [
             'title'=>'required',
             'content'=>'required',
-            'image'=>'mimes:png,jpg,jpeg',
+            'image_galleries'=>'required',
             'user_id'=>'required',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'image_galleries.required'=>"Images Field is Required"
         ];
     }
 }
