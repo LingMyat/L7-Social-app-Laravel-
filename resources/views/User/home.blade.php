@@ -45,7 +45,7 @@
                                         <h5 class="py-2 card-title">{{ $post->title }}</h5>
                                     </a>
                                 </div>
-                                <div class="col-4 pt-2 px-5 d-flex gap-2 justify-content-end @if ($post->user_id !== auth()->id()) d-none @endif">
+                                <div class="col-4 pt-2 px-1 d-flex gap-1 justify-content-end @if ($post->user_id !== auth()->id()) d-none @endif">
                                     <a href="{{ route('user#postEdit',$post->id) }}"><i class="bi bi-pencil"></i></a>
                                     <a href="{{ route('user#postDelete',$post->id) }}"><i class="bi bi-trash"></i></a>
                                 </div>

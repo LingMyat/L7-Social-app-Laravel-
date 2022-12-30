@@ -29,4 +29,11 @@ class MessageRequest extends FormRequest
             'content'=>'required',
         ];
     }
+    public function messages()
+    {
+        return [
+            'reciever_id.required' => 'You Need To Select One Friend',
+            'content.required' => 'A message Body is Required',
+        ];
+    }
 }

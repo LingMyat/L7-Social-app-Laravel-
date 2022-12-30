@@ -33,7 +33,7 @@ class UserRequest extends FormRequest
         'image'=>'mimes:png,jpg,jpeg',
         'phone'=>'required',
         'address'=>'required',
-        'bio'=>'string',
+        'bio'=>'',
         'gender'=>'required',
         'role'=>'required',
         'job'=>'required',

@@ -1,4 +1,12 @@
 @extends('layout')
+@section('css')
+    <style>
+        .nice-select.open .list
+        {
+            width: 100%;
+        }
+    </style>
+@endsection
 @section('content')
 <div class="card mb-3">
 
@@ -48,11 +56,12 @@
         </div>
 
         <div class="col-12">
-            <label class="form-label">Your Gender</label>
-            <select style="" class="form-select js-example-basic-single " name="gender" >
+            <div class="form-label">Your Gender</div>
+            <select style="" class="w-100" name="gender" >
                 <option >Choose your gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
+                <option value="rather not or say">Rather Not or Say</option>
             </select>
             @error('gender')
               <small class="text-danger">{{ $message }}</small>
@@ -85,4 +94,11 @@
 
     </div>
   </div>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function () {
+            $('select').niceSelect();
+        });
+    </script>
 @endsection

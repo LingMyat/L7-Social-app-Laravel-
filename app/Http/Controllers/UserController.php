@@ -31,29 +31,30 @@ class UserController extends Controller
         $friendRequestOtherProfile = FriendRequest::where([
             'sender_id'=>$id->id,
             'reciever_id'=>auth()->id(),
-            'status'=>'pending'
-        ])->first();
+        ])->status('pending')->first();
 
         $friendRequestOtherProfile2 = FriendRequest::where([
             'sender_id'=>auth()->id(),
             'reciever_id'=>$id->id,
-            'status'=>'pending'
-        ])->first();
+        ])->status('pending')->first();
 
         $friendRequest = FriendRequest::where([
             'reciever_id'=>$id->id,
-            'status'=>'pending'
-        ])->get();
+        ])->status('pending')->get();
 
         $friends = FriendRequest::where([
             'reciever_id'=>$id->id,
-            'status'=>'fri'
-        ])->get();
+        ])->status('fri')->get();
 
+        $friendStatusValue = FriendRequest::where([
+            'sender_id'=>auth()->id(),
+            'reciever_id'=>$id->id,
+        ])->status('fri')->first();
         $friendRequestValues = [];
         $friendsValues = [];
         $friendRequestOtherProfileValues= true;
         $friendRequestOtherProfile2Value = true;
+        $friendStatus = true;
         foreach ($friendRequest as $row) {
             array_push($friendRequestValues,$row->sender_id);
         }
@@ -70,6 +71,9 @@ class UserController extends Controller
             $friendRequestOtherProfile2Value = false;
         }
 
+        if (empty($friendStatusValue)) {
+            $friendStatus = false;
+        }
         return view('User.account.profile',
         [
             'user'=>$id,
@@ -80,6 +84,7 @@ class UserController extends Controller
             'friendRequestOtherProfile'=>$friendRequestOtherProfile,
             'friendRequestOtherProfileValues'=>$friendRequestOtherProfileValues,
             'friendRequestOtherProfile2Value'=>$friendRequestOtherProfile2Value,
+            'friendStatus'=>$friendStatus,
         ]);
     }
     //user profileUpdate
@@ -116,11 +121,13 @@ class UserController extends Controller
     }
     //addFriend
     public function addFriend(Request $request){
-        FriendRequest::create([
+        $data = FriendRequest::create([
             'sender_id'=>$request->sender,
             'reciever_id'=>$request->reciever,
             'status'=>'pending'
         ]);
+        $name = $data->reciever->name;
+        session()->put('success',"Request Sent to $name!");
         return response()->json(['status'=>'success'],201);
     }
     //cancelRequest
@@ -130,31 +137,37 @@ class UserController extends Controller
             'sender_id'=>auth()->id(),
             'status'=>'pending'
         ])->delete();
+        session()->put('success','Request Canceled!');
         return response()->json(['status'=>'success',200]);
     }
     //respondFriend
     public function respondFriend(Request $request){
         FriendRequest::where('id',$request->id)->update(['status'=>'fri']);
-        FriendRequest::create([
+        $data = FriendRequest::create([
             'sender_id'=>$request->reciever,
             'reciever_id'=>$request->sender,
             'status'=>'fri'
         ]);
+        $name = $data->reciever->name;
+        session()->put('success',"Friend Accepted to $name!");
         return response()->json(['status'=>'success'],201);
     }
     //confirmFri
     public function confirmFri(Request $request){
         FriendRequest::where('id',$request->id)->update(['status'=>'fri']);
-        FriendRequest::create([
+        $data = FriendRequest::create([
             'sender_id'=>$request->sender,
             'reciever_id'=>$request->reciever,
             'status'=>'fri'
         ]);
+        $name = $data->reciever->name;
+        session()->put('success',"Friend Accepted to $name!");
         return response()->json(['status'=>'success'],201);
     }
     //deleteFriReq
     public function deleteFriReq(Request $request){
         FriendRequest::where('id',$request->id)->delete();
+        session()->put('success',"Request Canceled!");
         return response()->json(['status'=>'success'],200);
     }
     //unFriend
@@ -167,6 +180,11 @@ class UserController extends Controller
             'sender_id'=>$request->user2,
             'reciever_id'=>$request->user1
         ])->delete();
+        session()->put('success',"Unfriend Success!");
         return response()->json(['status'=>'success'],200);
+    }
+
+    public function forgetSession(){
+        session()->forget('success');
     }
 }

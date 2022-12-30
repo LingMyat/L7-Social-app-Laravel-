@@ -64,6 +64,7 @@ Route::middleware([
         Route::get('confirmFri','confirmFri');
         Route::get('deleteFriReq','deleteFriReq');
         Route::get('unFriend','unFriend');
+        Route::get('forget-session','forgetSession');
     });
     // Post Section
     Route::controller(PostController::class)

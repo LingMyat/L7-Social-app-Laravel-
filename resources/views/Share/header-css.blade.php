@@ -16,4 +16,6 @@
 
  <!-- Template Main CSS File -->
  <link href="assets/css/style.css" rel="stylesheet">
+ <link rel="stylesheet" href="{{ asset('assets/theme/NiceSelect/css/nice-select.css') }}">
+  @yield('css')
 

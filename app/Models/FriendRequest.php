@@ -15,4 +15,15 @@ class FriendRequest extends Model
     public function sender(){
         return $this->belongsTo(User::class,'sender_id');
     }
+    public function reciever(){
+        return $this->belongsTo(User::class,'reciever_id');
+    }
+    public function scopeStatus($query,$status)
+    {
+        return $query->where('status',$status);
+    }
+    public function scopeNotEqualStatus($query, $status)
+    {
+        return $query->where('status', '!=', $status);
+    }
 }
