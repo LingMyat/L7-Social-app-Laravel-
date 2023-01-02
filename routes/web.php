@@ -100,5 +100,6 @@ Route::middleware([
         Route::get('delete/{id}','deleteMessage')->name('message#delete');
         Route::get('read','readMessage');
         Route::get('view/message/{id}','viewMyMessage')->name('message#viewMyMessage');
+        Route::get('live-chat','liveChat')->name('message#liveChat');
     });
 });

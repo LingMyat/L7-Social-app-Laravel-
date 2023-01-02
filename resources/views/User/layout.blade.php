@@ -122,6 +122,12 @@
             </span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ route('message#liveChat') }}">
+            <i class="ri-article-line"></i>
+          <span>Live-Chat</span>
+        </a>
+      </li>
     </ul>
 
   </aside><!-- End Sidebar-->

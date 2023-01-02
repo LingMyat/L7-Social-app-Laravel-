@@ -54,4 +54,9 @@ class MessageController extends Controller
     public function readMessage(Request $request){
         Message::where('id',$request->id)->update(['status'=>'read']);
     }
+
+    //liveChat
+    public function liveChat(){
+        return view('User.message.liveChat');
+    }
 }
