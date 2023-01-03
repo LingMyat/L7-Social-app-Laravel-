@@ -8,6 +8,8 @@ const io = require('socket.io')(server,{
     cors : { origin:"*"}
 });
 
+
+// Run when client connects
 io.on('connection',(socket)=>{
     console.log('Someone is connect');
 

@@ -20,19 +20,19 @@
             </div>
             <div class="card-bodey">
                 <div class="" style="min-height: 60vh" id="message_Container">
-                    {{-- <div class="mb-2 px-2">
-                        <img style="height: 35px;width: 35px;"
+                    <div class="mb-2 px-2 d-flex gap-2">
+                        <img style="height: 25px;width: 25px;"
                             src="{{ asset(auth()->user()->media->image ?? 'assets/theme/default_user/defuser.png') }}"
                             alt="Profile" class="rounded-circle">
-                        <small><b>{{ auth()->user()->name }}</b></small>
-                        <div>
-                            <b class="ms-4">
+                        <small class="row">
+                            <b class="col-12">{{ auth()->user()->name }}</b>
+                            <b class="col-7 bg-secondary-light ms-2 mt-1 rounded-1">
                                 <i>
-                                    Hello What Are You Doing?
+                                    <small>Hello What Are You Doing?huyu cuurhcue euihdurhch</small>
                                 </i>
                             </b>
-                        </div>
-                    </div> --}}
+                        </small>
+                    </div>
                 </div>
             </div>
             <div class="card-footer">
@@ -74,7 +74,7 @@
 
                 sender = `
                 <div class="text-end m-1">
-                    <div class=" p-1 d-inline-block alert alert-info">
+                    <div class=" p-1 d-inline-block alert mb-0 alert-info">
                         <i class="mx-3">
                             ${data.message}
                         </i>
@@ -83,17 +83,19 @@
                 `;
                 reciever = `
                 <div class="mb-1 px-2">
-                        <img style="height: 35px;width: 35px;"
+                        <img style="height: 30px;width: 30px;"
                             src="${data.profile}"
                             alt="Profile" class="rounded-circle">
-                        <small><b>${data.name}</b></small>
-                        <div>
-                            <b class="ms-4">
-                                <i>
-                                    ${data.message}
-                                </i>
-                            </b>
-                        </div>
+                        <small><b>${data.name}</b>
+                            <ul>
+                                <li>
+                                    <i>
+                                        <small>${data.message}</small>
+                                    </i>
+                                </li>
+                            </ul>
+                        </small>
+
                     </div>
                 `;
                 message_container.innerHTML += data.id == $id ? sender : reciever;
