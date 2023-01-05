@@ -3,11 +3,11 @@
 use App\Models\Like;
 use App\Models\Message;
 
-function fileStorage($request){
-    $imgName = uniqid().$request->file('image')->getClientOriginalName();
-    $request->file('image')->storeAs('public',$imgName);
-    return $imgName;
-}
+// function fileStorage($request){
+//     $imgName = uniqid().$request->file('image')->getClientOriginalName();
+//     $request->file('image')->storeAs('public',$imgName);
+//     return $imgName;
+// }
 
 function checkLiked($id){
     $like = Like::where('post_id',$id)->where('user_id',auth()->id())->first();

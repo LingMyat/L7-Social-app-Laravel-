@@ -91,7 +91,7 @@
     <script>
         $(document).ready(function() {
             $('#image_galleries').fileinput({
-                maxFileSize: 1000,
+                maxFileSize: 2000,
             }).on('fileselect', function(event, numFiles, label) {
                 $('button[type="button"].kv-file-zoom').remove();
                 $('.fileinput-upload-button').remove();

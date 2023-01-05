@@ -61,22 +61,23 @@
             <div class="card-bodey">
                 <div class="row p-1">
                     @foreach ($rooms as $room)
-
-                        <!-- Card with an image on left -->
-                        <div class="card my-2 col-md-6 mb-3">
-                            <div class="row m-1 g-0">
-                            <div class="col-md-6">
-                                <img src="{{ asset($room->media->image) }}" class="img-fluid rounded-start" alt="{{ $room->name }}">
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card-body">
-                                <h5 class="card-title">Room-Name : {{ $room->name }}</h5>
-                                {{-- <div>{{ $room->admin->name }}</div> --}}
-                                    <a href="/room/live-chat?roomId={{ $room->id }}" class="btn btn-md-sm float-end btn-danger">Enter</a>
+                        <div class="my-2 col-md-6">
+                            <!-- Card with an image on left -->
+                            <div class="card mx-1 mb-3">
+                                <div class="row m-1 g-0">
+                                <div class="col-md-6">
+                                    <img src="{{ asset($room->media->image) }}" class="img-fluid rounded-start" alt="{{ $room->name }}">
                                 </div>
-                            </div>
-                            </div>
-                        </div><!-- End Card with an image on left -->
+                                <div class="col-md-6">
+                                    <div class="card-body">
+                                    <h5 class="card-title">Room-Name : {{ $room->name }}</h5>
+                                    {{-- <div>{{ $room->admin->name }}</div> --}}
+                                        <a href="/room/live-chat?roomId={{ $room->id }}" class="btn btn-md-sm float-end btn-danger">Enter</a>
+                                    </div>
+                                </div>
+                                </div>
+                            </div><!-- End Card with an image on left -->
+                        </div>
                     @endforeach
                 </div>
             </div>

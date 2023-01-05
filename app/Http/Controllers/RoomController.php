@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Media;
 use App\Models\Room;
+use App\Models\RoomMessage;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -43,6 +44,15 @@ class RoomController extends Controller
     //liveChat
     public function liveChat(Request $request){
         $room = Room::where('id',$request->roomId)->first();
+        $messages = RoomMessage::roomIn($request->roomId)->with('room','user')->all();
         return view('User.message.liveChat',compact('room'));
+    }
+    //storeMessage
+    public function storeMessage(Request $request){
+        RoomMessage::create([
+            'room_id'=>$request->roomId,
+            'user_id'=>$request->id,
+            'message'=>$request->message
+        ]);
     }
 }

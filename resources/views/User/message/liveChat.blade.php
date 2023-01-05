@@ -39,7 +39,7 @@
             <div class="card-footer">
                 <div class="input-group">
                     <input class="form-control" type="text" id="msg">
-                    <button class="btn btn-primary" id="send-btn">send <i class="bx bxl-telegram"></i></button>
+                    <button class="btn btn-primary" data-url="{{ route('liveChat#storeMessage') }}" id="send-btn">send <i class="bx bxl-telegram"></i></button>
                 </div>
             </div>
         </div>
@@ -52,13 +52,14 @@
     </script>
     <script>
         $(document).ready(function() {
-            const {roomId} = Qs.parse(location.search,{
-                ignoreQueryPrefix : true
-            });
+            // const {roomId} = Qs.parse(location.search,{
+            //     ignoreQueryPrefix : true
+            // });
 
             $id = "{{ auth()->user()->id }}"
             $name = "{{ auth()->user()->name }}";
             $profile = "{{ $profile }}";
+            $roomId = "{{ request('roomId') }}";
             let current_id;
             const message_container = document.getElementById('message_Container');
             let ip_address = '127.0.0.1';
@@ -68,7 +69,7 @@
             joinRoomData = {
                 name : $name,
                 profile : $profile,
-                roomId : roomId,
+                roomId : $roomId,
             }
 
             socket.emit('joinRoom',joinRoomData);
@@ -86,12 +87,24 @@
                 if ($('#msg').val() == '') {
                     return
                 }
+
                 data = {
                     id: $id,
+                    roomId: $roomId,
                     name: $name,
                     profile: $profile,
                     message: $('#msg').val(),
                 }
+
+                $.ajax({
+                    type: "get",
+                    url: $(this).data('url'),
+                    data: data,
+                    dataType: "json",
+                    success: function (response) {
+
+                    }
+                });
                 socket.emit('message', data)
             });
 

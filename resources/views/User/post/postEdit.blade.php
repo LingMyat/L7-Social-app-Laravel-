@@ -95,7 +95,7 @@
                 initialPreviewAsData: true,
                 initialPreviewConfig: previewConfig,
                 overwriteInitial: false,
-                maxFileSize: 500,
+                maxFileSize: 2000,
             }).on('fileselect', function(event, numFiles, label) {
                 removeAndAddClass();
             }).on('filecleared', function(event, numFiles, label) {

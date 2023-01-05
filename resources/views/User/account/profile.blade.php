@@ -5,6 +5,10 @@
         {
             width: 100%;
         }
+
+        p {
+            font-size: 14px;
+        }
     </style>
 @endsection
 @section('search')
@@ -173,15 +177,25 @@
                             @csrf
                               <div class="row mb-3">
                                 <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-                                <div class="col-md-8 col-lg-9">
-                                    <img alt="Profile" class="rounded-circle" src="{{ asset(auth()->user()->media->image??'assets/theme/default_user/defuser.png') }}" alt="">
-                                  <div class="pt-3">
-                                    <input type="file" class="form-control" name="image" id="">
+                                {{-- <div class=""> --}}
+                                    {{-- <img alt="Profile" class="rounded-circle" src="{{ asset(auth()->user()->media->image??'assets/theme/default_user/defuser.png') }}" alt=""> --}}
+                                  <div class="pt-3 col-md-8 col-lg-9">
+                                    <input
+                                    type="file"
+                                    name="image"
+                                    id="profile_img"
+                                    data-max-file-size="1000K"
+                                    data-default-file="{{ $user->media->image??"" }}"
+                                    {{-- data-max-width="600" --}}
+                                    {{-- data-max-height="701" --}}
+                                    {{-- data-allowed-formats="portrait" --}}
+                                    data-allowed-file-extensions='["png", "PNG", "jpg", "JPG", "jpeg", "JPEG"]'>
+                                    <p class="sub-header mt-2">
                                     @error('image')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                   </div>
-                                </div>
+                                {{-- </div> --}}
                               </div>
 
                               <div class="row mb-3">
@@ -359,6 +373,7 @@
                     url: "/user/forget-session",
                 });
             }, 100);
+            $('#profile_img').dropify();
             $("#nice_select").niceSelect();
             $('#addFriendBtn').click(function(){
                 $.ajax({

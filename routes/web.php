@@ -109,5 +109,6 @@ Route::middleware([
         Route::get('/','index')->name('room#index');
         Route::post('/store','store')->name('room#store');
         Route::get('/live-chat','liveChat')->name('room#liveChat');
+        Route::get('/message','storeMessage')->name('liveChat#storeMessage');
     });
 });

@@ -90,24 +90,21 @@ class UserController extends Controller
     //user profileUpdate
     public function profileUpdate(User $id,UserRequest $request){
         $validated = $request->validated();
-
         if ($request->hasFile('image')) {
             $path = User::UPLOAD_PATH . '/' . date('Y'). "/" . date('m') . '/';
             $fileName = uniqid().time().'.'.$request->file('image')->extension();
             $request->file('image')->move(public_path($path), $fileName);
-
-            if ($id->media->image === Null) {
-                Media::create([
-                    'image'=> $path . $fileName,
-                    'mediable_id'=>$id->id,
-                    'mediable_type'=>User::class
-                ]);
-            } else {
-                $media = Media::where('mediable_id',$id->id)->first();
+            Media::create([
+                'image'=> $path . $fileName,
+                'mediable_id'=>$id->id,
+                'mediable_type'=>User::class
+            ]);
+            if ($id->image != Null) {
+                $media = Media::findOrFail('mediable_id',$id->id);
                 File::delete(public_path($media->image));
-                $media->update(['image'=> $path . $fileName,]);
             }
-
+        } else {
+            $validated['image']=$id->image;
         }
         $id->update($validated);
         return to_route('user#profile',$id->id)->with('success','Account Updated Successful');
