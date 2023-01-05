@@ -49,13 +49,22 @@ class PostController extends Controller
         return view('user.post.postEdit',['post'=>$id]);
     }
     //post Update
-    public function postUpdate(Post $id,PostRequest $request){
-        $validated = $request->validated();
-        if ($request->hasFile('image')) {
-            $validated['image'] = fileStorage($request);
-            Storage::delete('public/'.$id->image);
-        } else {
-            $validated['image'] = $id->image;
+    public function postUpdate(Post $id,Request $request){
+        $validated = $request->validate([
+            'title'=>'required',
+            'content'=>'required',
+        ]);
+        $path = Post::UPLOAD_PATH . "/" .date('Y').'/'.date('m').'/';
+        if ($request->hasFile('image_galleries')) {
+            foreach ($request->image_galleries as $key => $image) {
+                $fileName = uniqid().time().'.'.$image->extension();
+                $image->move(public_path($path),$fileName);
+                Media::create([
+                    'image'=>$path.$fileName,
+                    'mediable_id'=>$id->id,
+                    'mediable_type'=>Post::class
+                ]);
+            }
         }
         $id->update($validated);
         return to_route('user#home');

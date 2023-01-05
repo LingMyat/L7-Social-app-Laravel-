@@ -19,12 +19,24 @@
   <!-- Template Main CSS File -->
   <link href="/assets/css/style.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('assets/theme/NiceSelect/css/nice-select.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/libs/dropify/dropify.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/theme/bootstrap-fileinput/fileinput.min.css') }}">
   @yield('css')
   <style>
       .form-control:focus {
           border: 1px solid #0000000;
           box-shadow: 0 0 0 0;
+      }
+
+      .form-control {
+          border-radius: 4px;
+          color: #6c757d;
+      }
+
+      ::placeholder {
+          font-size: 14px;
+          text-transform: capitalize;
+          color: #6c757d;
       }
 
       .btn-primary {
@@ -59,6 +71,34 @@
           color: #fff;
           background-color: #306cc8;
           border-color: 1px solid #2d67be;
+      }
+
+      .btn-info {
+          color: #fff;
+          background-color: #4fc6e1;
+          border-color: #4fc6e1;
+      }
+
+      .btn-info:hover {
+          color: #fff;
+          background-color: #2ebbdb;
+          border-color: #25b7d8;
+      }
+
+      .btn-secondary {
+          color: #fff;
+          background-color: #6c757d;
+          border-color: #6c757d;
+      }
+
+      .btn-secondary:hover {
+          color: #fff;
+          background-color: #5a6268;
+          border-color: #545b62;
+      }
+
+      .btn {
+          border-radius: 4px;
       }
 
       .badge {

@@ -7,6 +7,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -93,13 +94,20 @@ Route::middleware([
     Route::controller(MessageController::class)
     ->prefix('message')
     ->group(function(){
-        Route::get('index','index')->name('message#index');
+        Route::get('/','index')->name('message#index');
         Route::post('send','sendMessage')->name('message#send');
         Route::get('view/{id}','viewMessage')->name('message#view');
         Route::get('sendPage/{id}','messageSendPage')->name('message#sendPage');
         Route::get('delete/{id}','deleteMessage')->name('message#delete');
         Route::get('read','readMessage');
         Route::get('view/message/{id}','viewMyMessage')->name('message#viewMyMessage');
-        Route::get('live-chat','liveChat')->name('message#liveChat');
+    });
+
+    Route::controller(RoomController::class)
+    ->prefix('room')
+    ->group(function(){
+        Route::get('/','index')->name('room#index');
+        Route::post('/store','store')->name('room#store');
+        Route::get('/live-chat','liveChat')->name('room#liveChat');
     });
 });

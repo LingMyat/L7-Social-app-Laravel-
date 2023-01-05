@@ -123,9 +123,9 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" href="{{ route('message#liveChat') }}">
-            <i class="ri-chat-voice-fill"></i>
-          <span>Live-Chat-Groups</span>
+        <a class="nav-link active" href="{{ route('room#index') }}">
+            <i class="bx bxl-slack"></i>
+          <span>Rooms</span>
         </a>
       </li>
     </ul>
