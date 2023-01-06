@@ -19,9 +19,9 @@
                 <h3>{{ $room->name }}</h3>
             </div>
             <div class="card-bodey">
-                <div class="" style="min-height: 60vh">
-                    <div id="messages_from_database">
-                        @foreach ($messages as $message)
+                <div class="" style="height: 60vh; overflow-y: scroll; overflow-x:hidden;" id="mainContainer">
+                    <div id="message_Container">
+                            @foreach ($messages as $message)
                             @if ($message->user->id == auth()->user()->id)
                                 <div class=" text-end m-1 mb-2">
                                     <small class=''>
@@ -68,9 +68,6 @@
                             @endif
                         @endforeach
                     </div>
-                    <div id="message_Container">
-
-                    </div>
                     {{-- <div class="mb-2 px-2 d-flex gap-2">
                         <img style="height: 25px;width: 25px;"
                             src="{{ asset(auth()->user()->media->image ?? 'assets/theme/default_user/defuser.png') }}"
@@ -103,17 +100,21 @@
     </script>
     <script>
         $(document).ready(function() {
+
             // const {roomId} = Qs.parse(location.search,{
             //     ignoreQueryPrefix : true
             // });
-
+            // scrollTop = $('#message_container').scrollHeight;
+            const message_container = document.getElementById('message_Container');
             $id = "{{ auth()->user()->id }}"
             $name = "{{ auth()->user()->name }}";
             $profile = "{{ $profile }}";
             $roomId = "{{ request('roomId') }}";
-            let current_id;
-            let current_sender_id_from_emit_server;
-            const message_container = document.getElementById('message_Container');
+            let current_id = "{{ $lastMessage->user->id }}" ?? 0 ;
+            let scrollFunc = ()=>{
+                $('#mainContainer').animate({scrollTop: $('#message_Container').height()},0);
+            }
+
             let ip_address = '127.0.0.1';
             let socket_port = '3000';
             let socket = io(ip_address + ':' + socket_port);
@@ -129,11 +130,13 @@
             socket.on('joining', name => {
                 message_container.innerHTML +=
                     `<small class="text-center d-block my-1"><b>${name} has joined the room.</b></small>`;
+                scrollFunc();
             })
 
             socket.on('leaving', name => {
                 message_container.innerHTML +=
                     `<small class="text-center d-block my-1"><b>${name} has left the room.</b></small>`;
+                    scrollFunc();
             })
             // socket.on('connection');
             $('#send-btn').click(function(e) {
@@ -148,11 +151,11 @@
                     name: $name,
                     profile: $profile,
                     message: $('#msg').val(),
-                    parent: false
+                    parent: 'false'
                 }
 
                 if (current_id == $id) {
-                    data.parent = true;
+                    data.parent = 'true';
                 }
 
                 $.ajax({
@@ -201,7 +204,7 @@
                     if (current_id == data.id) {
                         let msg_content = document.getElementsByClassName('msg-content');
                         msg_content[msg_content.length - 1].innerHTML += `
-                            <b class="col-7 bg-secondary-light ms-2 mt-1 rounded-1">
+                            <b class="col-8 bg-secondary-light ms-2 mt-1 rounded-1">
                                         <i>
                                             <small>${data.message}</small>
                                         </i>
@@ -213,7 +216,9 @@
                 }
                 $('#msg').val('');
                 current_id = data.id;
+                scrollFunc()
             })
+            scrollFunc();
         });
     </script>
 @endsection

@@ -45,7 +45,8 @@ class RoomController extends Controller
     public function liveChat(Request $request){
         $room = Room::where('id',$request->roomId)->first();
         $messages = LiveChatMessage::roomIn($request->roomId)->onlyParent()->with('room','user')->get();
-        return view('User.message.liveChat',compact('room','messages'));
+        $lastMessage = LiveChatMessage::orderBy('id','desc')->first();
+        return view('User.message.liveChat',compact('room','messages','lastMessage'));
     }
     //storeMessage
     public function storeMessage(Request $request){
