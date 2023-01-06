@@ -77,4 +77,19 @@ class User extends Authenticatable
     {
         return $query->where("active",true);
     }
+
+    public function reacts()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
