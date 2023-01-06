@@ -22,7 +22,6 @@ io.on('connection',(socket)=>{
             profile : joinRoomData.profile,
             roomId : joinRoomData.roomId
         });
-        console.log(users);
         socket.on('message',(data)=>{
             io.sockets.to(joinRoomData.roomId).emit('message',data);
         });

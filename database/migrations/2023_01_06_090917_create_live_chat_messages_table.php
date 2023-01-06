@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('room_messages', function (Blueprint $table) {
+        Schema::create('live_chat_messages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('room_id')->nullable();
             $table->foreign('room_id')->references('id')->on('rooms')->onDelete('set null');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
-            $table->string('message');
+            $table->longText('message');
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('live_chat_messages')->onDelete('set null');
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('room_messages');
+        Schema::dropIfExists('live_chat_messages');
     }
 };

@@ -19,8 +19,58 @@
                 <h3>{{ $room->name }}</h3>
             </div>
             <div class="card-bodey">
-                <div class="" style="min-height: 60vh" id="message_Container">
+                <div class="" style="min-height: 60vh">
+                    <div id="messages_from_database">
+                        @foreach ($messages as $message)
+                            @if ($message->user->id == auth()->user()->id)
+                                <div class=" text-end m-1 mb-2">
+                                    <small class=''>
+                                        <div class="text-end">
+                                            <b style="max-width: 320px"
+                                                class='d-inline-block p-1 px-2 rounded-1 bg-info-light mx-3 rounded-1 text-start'>
+                                                <i class="">
+                                                    <small>{{ $message->message }}</small>
+                                                </i>
+                                            </b>
+                                        </div>
+                                        @foreach ($message->childs as $sameUserMsg)
+                                            <div class="text-end mt-1">
+                                                <b style="max-width: 320px"
+                                                    class='d-inline-block  p-1 px-2 rounded-1 bg-info-light mx-3 rounded-1 text-start'>
+                                                    <i class="">
+                                                        <small>{{ $sameUserMsg->message }}</small>
+                                                    </i>
+                                                </b>
+                                            </div>
+                                        @endforeach
+                                    </small>
+                                </div>
+                            @else
+                                <div class="mb-2 px-2 d-flex gap-2">
+                                    <img style="height: 25px;width: 25px;" src="{{ $message->user->media->image }}"
+                                        alt="Profile" class="rounded-circle">
+                                    <small class="row msg-content">
+                                        <b class="col-12">{{ $message->user->name }}</b>
+                                        <b class="col-8 bg-secondary-light ms-2 mt-1 rounded-1">
+                                            <i>
+                                                <small>{{ $message->message }}</small>
+                                            </i>
+                                        </b>
+                                        @foreach ($message->childs as $sameUserMsg)
+                                            <b class="col-8 bg-secondary-light ms-2 mt-1 rounded-1">
+                                                <i>
+                                                    <small>{{ $sameUserMsg->message }}</small>
+                                                </i>
+                                            </b>
+                                        @endforeach
+                                    </small>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div id="message_Container">
 
+                    </div>
                     {{-- <div class="mb-2 px-2 d-flex gap-2">
                         <img style="height: 25px;width: 25px;"
                             src="{{ asset(auth()->user()->media->image ?? 'assets/theme/default_user/defuser.png') }}"
@@ -39,7 +89,8 @@
             <div class="card-footer">
                 <div class="input-group">
                     <input class="form-control" type="text" id="msg">
-                    <button class="btn btn-primary" data-url="{{ route('liveChat#storeMessage') }}" id="send-btn">send <i class="bx bxl-telegram"></i></button>
+                    <button class="btn btn-primary" data-url="{{ route('liveChat#storeMessage') }}" id="send-btn">send <i
+                            class="bx bxl-telegram"></i></button>
                 </div>
             </div>
         </div>
@@ -61,25 +112,28 @@
             $profile = "{{ $profile }}";
             $roomId = "{{ request('roomId') }}";
             let current_id;
+            let current_sender_id_from_emit_server;
             const message_container = document.getElementById('message_Container');
             let ip_address = '127.0.0.1';
             let socket_port = '3000';
             let socket = io(ip_address + ':' + socket_port);
 
             joinRoomData = {
-                name : $name,
-                profile : $profile,
-                roomId : $roomId,
+                name: $name,
+                profile: $profile,
+                roomId: $roomId,
             }
 
-            socket.emit('joinRoom',joinRoomData);
+            socket.emit('joinRoom', joinRoomData);
 
-            socket.on('joining',name=>{
-                message_container.innerHTML += `<small class="text-center d-block my-1"><b>${name} has joined the room.</b></small>`;
+            socket.on('joining', name => {
+                message_container.innerHTML +=
+                    `<small class="text-center d-block my-1"><b>${name} has joined the room.</b></small>`;
             })
 
-            socket.on('leaving',name=>{
-                message_container.innerHTML += `<small class="text-center d-block my-1"><b>${name} has left the room.</b></small>`;
+            socket.on('leaving', name => {
+                message_container.innerHTML +=
+                    `<small class="text-center d-block my-1"><b>${name} has left the room.</b></small>`;
             })
             // socket.on('connection');
             $('#send-btn').click(function(e) {
@@ -94,6 +148,11 @@
                     name: $name,
                     profile: $profile,
                     message: $('#msg').val(),
+                    parent: false
+                }
+
+                if (current_id == $id) {
+                    data.parent = true;
                 }
 
                 $.ajax({
@@ -101,9 +160,6 @@
                     url: $(this).data('url'),
                     data: data,
                     dataType: "json",
-                    success: function (response) {
-
-                    }
                 });
                 socket.emit('message', data)
             });
@@ -111,13 +167,15 @@
             socket.on('message', (data) => {
 
                 sender = `
-                <div class="text-end m-1">
-                        <small class=''>
-                            <b class =' p-1 px-2 rounded-1 bg-info-light mx-3'>
-                                <i class="">
-                                ${data.message}
-                            </i>
-                            </b>
+                <div class="text-end m-1 mb-2">
+                        <small class='text-start'>
+                            <div class="text-end">
+                                                <b style="max-width: 320px" class ='d-inline-block p-1 px-2 rounded-1 bg-info-light mx-3 rounded-1 text-start'>
+                                                    <i class="">
+                                                        <small>${data.message}</small>
+                                                </i>
+                                                </b>
+                                            </div>
                         </small>
                 </div>
                 `;
@@ -128,7 +186,7 @@
                             alt="Profile" class="rounded-circle">
                         <small class="row msg-content">
                             <b class="col-12">${data.name}</b>
-                            <b class="col-7 bg-secondary-light ms-2 mt-1 rounded-1">
+                            <b class="col-8 bg-secondary-light ms-2 mt-1 rounded-1">
                                 <i>
                                     <small>${data.message}</small>
                                 </i>
@@ -137,22 +195,22 @@
                     </div>
                 `;
 
-                    if (data.id == $id) {
-                        message_container.innerHTML +=  sender;
-                    } else {
-                        if (current_id == data.id) {
-                            let msg_content = document.getElementsByClassName('msg-content');
-                            msg_content[msg_content.length-1].innerHTML += `
+                if (data.id == $id) {
+                    message_container.innerHTML += sender;
+                } else {
+                    if (current_id == data.id) {
+                        let msg_content = document.getElementsByClassName('msg-content');
+                        msg_content[msg_content.length - 1].innerHTML += `
                             <b class="col-7 bg-secondary-light ms-2 mt-1 rounded-1">
                                         <i>
                                             <small>${data.message}</small>
                                         </i>
                                     </b>
                             `;
-                            } else {
-                                message_container.innerHTML +=  reciever
-                            }
+                    } else {
+                        message_container.innerHTML += reciever
                     }
+                }
                 $('#msg').val('');
                 current_id = data.id;
             })
