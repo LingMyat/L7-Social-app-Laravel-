@@ -66,6 +66,8 @@ Route::middleware([
         Route::get('deleteFriReq','deleteFriReq');
         Route::get('unFriend','unFriend');
         Route::get('forget-session','forgetSession');
+        Route::get('/messenger/{id}','messengerBlade')->name('user#messenger');
+        Route::post('/messenger',"storeMessenger")->name('user#storeMessenger');
     });
     // Post Section
     Route::controller(PostController::class)
@@ -109,6 +111,6 @@ Route::middleware([
         Route::get('/','index')->name('room#index');
         Route::post('/store','store')->name('room#store');
         Route::get('/live-chat','liveChat')->name('room#liveChat');
-        Route::get('/message','storeMessage')->name('liveChat#storeMessage');
+        Route::post('/message','storeMessage')->name('liveChat#storeMessage');
     });
 });

@@ -29,4 +29,16 @@ class Message extends Model
     {
         return $query->where('status', '!=', $status);
     }
+    public function scopeOnlyParent($query)
+    {
+        return $query->whereNull('parent_id')->where('parent_id', null);
+    }
+    public function parent()
+    {
+        return $this->belongsTo(Message::class,'parent_id');
+    }
+    public function children()
+    {
+        return $this->hasMany(Message::class,'parent_id');
+    }
 }

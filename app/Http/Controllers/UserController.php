@@ -187,4 +187,26 @@ class UserController extends Controller
     public function forgetSession(){
         session()->forget('success');
     }
+
+    public function messengerBlade($id){
+        $user = User::where('id',$id)->with('media')->first();
+        $users = [$user->id,auth()->user()->id];
+        $query = Message::whereIn(
+            'sender_id', $users
+        )->whereIn(
+            'reciever_id', $users
+        );
+        $messages = $query->get();
+        // ->latest()->first()
+        // dd($messages->toArray());
+        return view('User.message.user-messenger',compact('user','messages'));
+    }
+
+    public function storeMessenger(Request $request){
+        Message::create([
+            'sender_id'=>$request->id,
+            'reciever_id'=>$request->reciever_id,
+            'content'=>$request->message
+        ]);
+    }
 }

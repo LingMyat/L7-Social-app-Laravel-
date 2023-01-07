@@ -73,6 +73,12 @@
           border-color: 1px solid #2d67be;
       }
 
+      .btn-blue:focus, .btn-blue:active, .btn-blue:focus-visible {
+          color: #fff;
+          background-color: #306cc8;
+          border-color: 1px solid #2d67be;
+      }
+
       .btn-info {
           color: #fff;
           background-color: #4fc6e1;

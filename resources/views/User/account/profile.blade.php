@@ -49,7 +49,7 @@
                             </button>
                         </div>
                     @elseif ($friendRequestOtherProfile2Value)
-                        <div class="col-12 {{ $user->id==auth()->id()?'d-none':'' }}  {{ in_array(auth()->id(),$friendsValues)?'d-none':'' }} mb-3">
+                        <div class="col-8 offset-2 {{ $user->id==auth()->id()?'d-none':'' }}  {{ in_array(auth()->id(),$friendsValues)?'d-none':'' }} mb-3">
                             <a
                             href="javascript:void(0);"
                             title="cancel-request"
@@ -67,8 +67,12 @@
                             <input type="hidden" class="user1" value="{{ $user->id }}">
                                     <input type="hidden" class="user2" value="{{ auth()->id() }}">
                             <div class=" w-100 row">
+                                @php
+                                    $userArr = [$user->name,auth()->user()->name];
+                                    sort($userArr);
+                                @endphp
                                 <button class="btn btn-secondary btn-sm col-sm-6 mb-2 col-12 unfriend-btn">Unfriend</button>
-                                <a href="{{ route('message#sendPage',$user->id) }}" class="col-sm-5 offset-sm-1 col-12 btn btn-sm btn-primary btn  message-btn">
+                                <a style="height: 32px" href="/user/messenger/{{ $user->id }}?roomName={{ $userArr[0].$userArr[1] }}" class="col-sm-5 offset-sm-1 col-12 btn btn-blue btn-sm message-btn">
                                     Message
                                 </a>
                             </div>

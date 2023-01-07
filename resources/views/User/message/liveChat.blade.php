@@ -95,9 +95,7 @@
     </main><!-- End #main -->
 @endsection
 @section('script')
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"
-        integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous">
-    </script>
+
     <script>
         $(document).ready(function() {
 
@@ -114,11 +112,9 @@
             let scrollFunc = ()=>{
                 $('#mainContainer').animate({scrollTop: $('#message_Container').height()},0);
             }
-
             let ip_address = '127.0.0.1';
             let socket_port = '3000';
             let socket = io(ip_address + ':' + socket_port);
-
             joinRoomData = {
                 name: $name,
                 profile: $profile,
@@ -159,7 +155,7 @@
                 }
 
                 $.ajax({
-                    type: "get",
+                    type: "POST",
                     url: $(this).data('url'),
                     data: data,
                     dataType: "json",

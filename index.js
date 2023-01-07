@@ -32,10 +32,13 @@ io.on('connection',(socket)=>{
 
     socket.on('disconnect',()=>{
         const user = users.find(e=>e.id == socket.id);
-        let index = users.findIndex(e=>e.id == user.id);
-        users.splice(index,1);
-        console.log(users);
-        io.sockets.to(user.roomId).emit('leaving',user.name);
+        if(user){
+            let index = users.findIndex(e=>e.id == user.id);
+            users.splice(index,1);
+            io.sockets.to(user.roomId).emit('leaving',user.name);
+        }else {
+            console.log('not in room');
+        }
     })
 })
 
