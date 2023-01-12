@@ -57,10 +57,9 @@ class RoomController extends Controller
             ->onlyParent()
             ->orderBy('id','desc')
             ->first();
-            logger($parent);
             LiveChatMessage::create([
                 'room_id'=>$request->roomId,
-                'user_id'=>$request->id,
+                'user_id'=>auth()->id(),
                 'message'=>$request->message,
                 'parent_id'=>$parent->id
             ]);
@@ -68,7 +67,7 @@ class RoomController extends Controller
         } else {
             LiveChatMessage::create([
                 'room_id'=>$request->roomId,
-                'user_id'=>$request->id,
+                'user_id'=>auth()->id(),
                 'message'=>$request->message,
             ]);
         }
