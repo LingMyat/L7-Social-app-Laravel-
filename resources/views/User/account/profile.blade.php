@@ -344,13 +344,17 @@
                         <div class="card-body profile-card pt-4 flex-column d-flex align-items-start gap-2">
                             @foreach ($friends as $friend)
                                 <div class="mb-2 parent">
+                                    @php
+                                    $userArr = [$friend->sender->name,auth()->user()->name];
+                                    sort($userArr);
+                                    @endphp
                                     <input type="hidden" class="user1" value="{{ $friend->sender_id }}">
                                     <input type="hidden" class="user2" value="{{ auth()->id() }}">
                                     <img style="height: 50px;width: 50px;" src="{{ asset($friend->sender->media->image??'assets/theme/default_user/defuser.png') }}" alt="Profile" class="rounded-circle">
                                     <span>{{ $friend->sender->name }}</span>
                                     <div class=" ms-5">
                                         <button class="btn btn-secondary  btn-sm unfriend-btn">Unfriend</button>
-                                        <a href="{{ route('message#sendPage',$friend->sender->id) }}">
+                                        <a href="/user/messenger/{{ $friend->sender->id }}?roomName={{ $userArr[0].$userArr[1] }}">
                                             <button class="btn btn-primary btn-sm message-btn">Message</button>
                                         </a>
                                     </div>
