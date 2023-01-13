@@ -26,7 +26,7 @@ class RoomController extends Controller
         return RoomResource::collection($rooms)->additional(['message'=>'success']);
     }
 
-
+    //room Messages
     public function roomMessages(Request $request)
     {
         $room = Room::where('id',$request->room_id)->first();

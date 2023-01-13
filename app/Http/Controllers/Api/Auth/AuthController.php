@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Models\User;
 use App\ResponseHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,6 +11,28 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    //register
+    public function register(Request $request)
+    {
+        $request->validate([
+        'name'=>'required',
+        'email'=>'required|unique',
+        'image'=>'mimes:png,jpg,jpeg',
+        'phone'=>'required',
+        'address'=>'required',
+        'gender'=>'required',
+        'password'=>'required',
+        'confirm_password'=>'required|same:password'
+        ]);
+        $user = User::create([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'phone'=>$request->phone,
+            'address'=>$request->address,
+            'gender'=>$request->gender,
+        ]);
+    }
+
     //login
     public function login(Request $request){
         $request->validate([

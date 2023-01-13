@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\v1\ChatController;
+use App\Http\Controllers\Api\v1\PostController;
 use App\Http\Controllers\Api\v1\RoomController;
 use App\Http\Controllers\Api\v1\UserController;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)
 ->prefix('auth')
 ->group(function(){
+    Route::post('register','register');
     Route::post('login','login');
     Route::post('logout','logout')->middleware('auth:api');
 });
@@ -41,6 +43,14 @@ Route::prefix('v1')
     Route::controller(ChatController::class)->group(function(){
         Route::get('messenger','messenger');
         Route::post('store-message','storeMessage');
+    });
+
+    Route::controller(PostController::class)->group(function(){
+        Route::get('posts','index');
+        Route::post('post','store');
+        Route::post('react-post','reactPost');
+        Route::post('cancel-react','cancelReact');
+        Route::post('store-comment','storeComment');
     });
 
 });

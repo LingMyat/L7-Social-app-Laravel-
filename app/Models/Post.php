@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Mail\PostStore;
+use App\Models\Comment;
 use App\Mail\PostDelete;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +29,16 @@ class Post extends Model
 
     public function gallery(){
         return $this->morphMany(Media::class,'mediable');
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
     // protected static function booted()
