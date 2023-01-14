@@ -11,6 +11,7 @@ class CommentController extends Controller
     //commentCreate
     public function commentCreate(CommentRequest $request){
         Comment::create($request->validated());
+        session()->put('ment',true);
         return back();
     }
     //commentDelete
@@ -21,6 +22,7 @@ class CommentController extends Controller
     //commentUpdate
     public function commentUpdate(Request $request,Comment $id){
         $id->update(['content'=>$request->content]);
+        session()->put('ment',true);
         return back();
     }
 }

@@ -37,6 +37,7 @@ Route::prefix('v1')
     });
 
     Route::controller(UserController::class)->group(function(){
+        Route::get('users','index');
         Route::get('friends','friends');
     });
 

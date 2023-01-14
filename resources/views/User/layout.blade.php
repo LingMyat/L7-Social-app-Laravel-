@@ -111,6 +111,12 @@
           <span>Posts</span>
         </a>
       </li><!-- End Blank Page Nav -->
+      <li class="nav-item">
+        <a class="nav-link" href="{{ route('people#index') }}">
+            <i class="ri-team-fill"></i>
+          <span>People</span>
+        </a>
+      </li>
       @php
           $unRead = messageNoti();
       @endphp
@@ -129,6 +135,7 @@
           <span>Rooms</span>
         </a>
       </li>
+
     </ul>
 
   </aside><!-- End Sidebar-->

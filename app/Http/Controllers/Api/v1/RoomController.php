@@ -18,12 +18,10 @@ class RoomController extends Controller
     {
         $query = Room::orderBy('id','desc');
         if ($request->search) {
-           $query->where(function($q) use($request){
-            $q->where('name','like',"%$request->search%");
-           });
+           $query->where('name','like',"%$request->search%");
         }
         $rooms = $query->with('media','admin')->active()->get();
-        return RoomResource::collection($rooms)->additional(['message'=>'success']);
+        return RoomResource::collection($rooms)->additional(['message'=>'Success']);
     }
 
     //room Messages

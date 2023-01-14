@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminAccountControllre;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FriendRequestController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PostController;
@@ -112,5 +113,16 @@ Route::middleware([
         Route::post('/store','store')->name('room#store');
         Route::get('/live-chat','liveChat')->name('room#liveChat');
         Route::post('/message','storeMessage')->name('liveChat#storeMessage');
+    });
+
+    Route::controller(FriendRequestController::class)
+    ->prefix('people')
+    ->group(function(){
+        Route::get('/','peopleList')->name('people#index');
+        Route::post('/add-friend/{id}','addFriend')->name('addFriend');
+        Route::post('/cancel-request/{id}','cancelRequest')->name('cancelRequest');
+        Route::post('/respond-friend/{id}','respondFriend')->name('respondFriend');
+        Route::post('/unfriend/{id}','unfriend')->name('unfriend');
+        Route::post('/forget-ment','forgetMent');
     });
 });

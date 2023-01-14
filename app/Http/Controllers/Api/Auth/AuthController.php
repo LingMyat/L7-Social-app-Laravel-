@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use Exception;
 use App\Models\User;
+use App\Models\Media;
 use App\ResponseHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -16,7 +20,7 @@ class AuthController extends Controller
     {
         $request->validate([
         'name'=>'required',
-        'email'=>'required|unique',
+        'email'=>'required|unique:users,email',
         'image'=>'mimes:png,jpg,jpeg',
         'phone'=>'required',
         'address'=>'required',
@@ -24,13 +28,36 @@ class AuthController extends Controller
         'password'=>'required',
         'confirm_password'=>'required|same:password'
         ]);
-        $user = User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'phone'=>$request->phone,
-            'address'=>$request->address,
-            'gender'=>$request->gender,
-        ]);
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'phone'=>$request->phone,
+                'address'=>$request->address,
+                'gender'=>$request->gender,
+                'password'=>Hash::make($request->password)
+            ]);
+            $path = User::UPLOAD_PATH."/".date('Y').'/'.date('m').'/';
+            $fileName = uniqid().time().'.'.$request->image->extension();
+            $request->image->move(public_path($path),$fileName);
+            Media::create([
+                'image'=>$path.$fileName,
+                'mediable_id'=>$user->id,
+                'mediable_type'=>User::class
+            ]);
+            DB::commit();
+            $token = $user->createToken('L7Social')->accessToken;
+            $data = [
+                'user'=>new UserResource($user),
+                'token'=>$token
+            ];
+            return ResponseHelper::success($data);
+        } catch (Exception $err) {
+            DB::rollback();
+            return ResponseHelper::fail($err->getMessage());
+        }
+
     }
 
     //login

@@ -8,17 +8,46 @@
   </div>
 @endsection
 @section('content')
+@php
+    $images = $post->gallery;
+@endphp
     <main id="main" class="main">
-        <section class="section">
+        <section class="section" id="section">
             <div class="row">
                 <div class="col-10 p-1 offset-1">
                     <div class="card">
-                        <img src="{{ asset('storage/'.$post->image) }}" class="card-img-top" alt="...">
+                              {{-- <h5 class="card-title">With indicators</h5> --}}
+
+                              <!-- Slides with indicators -->
+                              <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    @for ($i=0;$i<count($images);$i++)
+                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $i }}" class="carousel-button {{ $i == 0 ? ' active' : '' }}" aria-current="{{ $i == 0 ? 'true' : '' }}" aria-label="Slide {{ $i+1 }}"></button>
+                                    @endfor
+                                </div>
+                                <div class="carousel-inner">
+                                    @foreach ($images as $key => $image)
+                                        <div class="carousel-item {{ $key == 0 ? ' active' : '' }} " data-bs-interval="3500" >
+                                            <img src="{{ $image->image }}" class="d-block w-100" alt="...">
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                  <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                  <span class="visually-hidden">Next</span>
+                                </button>
+
+                              </div><!-- End Slides with indicators -->
                         <div class="card-body">
                           <div class="row">
                             <div class="col-12 mt-3 d-flex gap-3 align-items-center">
                                 <img style="width: 40px;height:40px;" class="rounded-circle" src="{{ asset($post->user->media->image??'assets/theme/default_user/defuser.png') }}" alt="">
-                                <div class="">{{ $post->user->name }}</div>
+                                <div class=""><b>{{ $post->user->name }}</b></div>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <h3 class=" card-title">{{ $post->title }}</h3>
@@ -82,20 +111,35 @@
 @endsection
 @section('script')
     <script>
+
         $(document).ready(function(){
+            let status = "{{ session('ment') }}";
+            let scrollFunc = ()=>{
+                window.scrollTo(0,document.body.scrollHeight);
+            };
+            if (status == true) {
+                scrollFunc();
+            }
             $('.delete-btn').click(function(){
-            $parent = $(this).parents('#cmtParent');
-            $id = $parent.find('.cmt_id').val();
-            $.ajax({
-                type : 'get',
-                url : '/comment/delete',
-                data : {id:$id},
-                dataType : 'json',
-                success : function(response){
-                    location.reload();
-                }
+                $parent = $(this).parents('#cmtParent');
+                $id = $parent.find('.cmt_id').val();
+                $.ajax({
+                    type : 'get',
+                    url : '/comment/delete',
+                    data : {id:$id},
+                    dataType : 'json',
+                    success : function(response){
+                        location.reload();
+                    }
+                })
             })
-        })
-        })
+
+            setTimeout(() => {
+                $.ajax({
+                    type: "POST",
+                    url: "/people/forget-ment",
+                });
+            }, 100);
+        });
     </script>
 @endsection
