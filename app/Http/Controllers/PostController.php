@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PublicEvent;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Media;
@@ -10,6 +11,7 @@ use App\Models\Comment;
 use App\Mail\PostDelete;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
+use App\Http\Resources\PostsResource;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -37,6 +39,7 @@ class PostController extends Controller
                 'mediable_type'=>Post::class
             ]);
         }
+        // event(new PublicEvent(new PostsResource($post)));
         return to_route('user#home')->with('success',"Post Created Successful!");
     }
     //postView

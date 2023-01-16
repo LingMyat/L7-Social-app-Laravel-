@@ -1,5 +1,6 @@
 <?php
 
+use Pusher\Pusher;
 use App\Models\Like;
 use App\Models\Message;
 
@@ -33,3 +34,20 @@ function messageNoti(){
 // {
 //     return $query->orderBy('id','desc');
 // }
+
+function noti($user_id,$message)
+{
+    $options = array(
+        'cluster' => 'ap1',
+        'useTLS' => true
+      );
+      $pusher = new Pusher(
+        '59ba2eab2eb53ae64ed6',
+        '8eb8b0ef539f742cf5f1',
+        '1539040',
+        $options
+      );
+
+      $data['message'] = $message;
+      $pusher->trigger("private.$user_id", 'private', $data);
+}

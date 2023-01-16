@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="{{ asset('assets/theme/NiceSelect/css/nice-select.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/libs/dropify/dropify.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/theme/bootstrap-fileinput/fileinput.min.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   @yield('css')
   <style>
       .form-control:focus {
