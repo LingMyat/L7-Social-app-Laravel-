@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('set null');
             $table->unsignedBigInteger('reciever_id')->nullable();
             $table->foreign('reciever_id')->references('id')->on('users')->onDelete('set null');
-            $table->string('status');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

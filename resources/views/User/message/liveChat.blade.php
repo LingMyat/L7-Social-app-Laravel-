@@ -108,7 +108,7 @@
             $name = "{{ auth()->user()->name }}";
             $profile = "{{ $profile }}";
             $roomId = "{{ request('roomId') }}";
-            let current_id = "{{ $lastMessage->user->id }}" ?? 0 ;
+            let current_id = "{{ $lastMessage->user->id ?? 0}}"  ;
             let scrollFunc = ()=>{
                 $('#mainContainer').animate({scrollTop: $('#message_Container').height()},0);
             }

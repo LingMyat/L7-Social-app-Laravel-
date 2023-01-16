@@ -94,7 +94,8 @@ class UserController extends Controller
             $path = User::UPLOAD_PATH . '/' . date('Y'). "/" . date('m') . '/';
             $fileName = uniqid().time().'.'.$request->file('image')->extension();
             $request->file('image')->move(public_path($path), $fileName);
-            if ($id->media->image != Null) {
+
+            if (!empty($id->media->image)) {
                 Media::where('mediable_id',$id->id)->delete();
             }
             Media::create([
