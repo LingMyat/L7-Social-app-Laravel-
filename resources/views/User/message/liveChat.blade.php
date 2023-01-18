@@ -128,6 +128,7 @@
                             class="bx bxl-telegram"></i></button>
                 </div>
             </div>
+
         </div>
 
     </main><!-- End #main -->
@@ -256,8 +257,23 @@
             //imge start
             $('#image_form').submit(function (e) {
                 e.preventDefault();
-                console.log($('#image_input').val());
+
+                const reader = new FileReader();
+                reader.addEventListener('load',()=>{
+                    data = {
+                    id: $id,
+                    roomId: $roomId,
+                    name: $name,
+                    profile: $profile,
+                    src: reader.result,
+                    }
+                    socket.emit('image', data)
+                });
+                reader.readAsDataURL($('#image_input')[0].files[0]);
                 $('.dropify-clear').click();
+            });
+            socket.on('image',(data)=>{
+                message_container.innerHTML =   `<img class="w-50" src="${data.src}" alt="">`
             });
             scrollFunc();
         });

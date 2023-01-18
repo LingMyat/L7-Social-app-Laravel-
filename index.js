@@ -28,6 +28,10 @@ io.on('connection',(socket)=>{
             io.sockets.to(joinRoomData.roomId).emit('message',data);
         });
 
+        socket.on('image',(data)=>{
+            io.sockets.to(joinRoomData.roomId).emit('image',data);
+        });
+
         socket.broadcast.to(joinRoomData.roomId).emit('joining',joinRoomData.name);
     })
 
