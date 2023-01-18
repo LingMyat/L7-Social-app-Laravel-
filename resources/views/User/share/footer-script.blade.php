@@ -22,7 +22,6 @@
 <script src="{{ asset('assets/libs/dropify/dropify.min.js') }}"></script>
 <script src="{{ asset('assets/theme/bootstrap-fileinput/fileinput.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.11.0/qs.min.js" integrity="sha512-/l6vieC+YxaZywUhmqs++8uF9DeMvJE61ua5g+UK0TuHZ4TkTgB1Gm1n0NiA86uEOM9JJ6JUwyR0hboKO0fCng==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"
     integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous">
 </script>
@@ -35,16 +34,16 @@
             }
         });
 
-            Pusher.logToConsole = true;
+            // Pusher.logToConsole = true;
 
-            var pusher = new Pusher('59ba2eab2eb53ae64ed6', {
-                cluster: 'ap1'
-            });
+            // var pusher = new Pusher('59ba2eab2eb53ae64ed6', {
+            //     cluster: 'ap1'
+            // });
 
-            var channel = pusher.subscribe('private.{{ auth()->id() }}');
-            channel.bind('private', function(res) {
-                toastr.success(JSON.stringify(res.message), {timeOut: 4000},{positionClass: "toast-top-center"})
-            });
+            // var channel = pusher.subscribe('private.{{ auth()->id() }}');
+            // channel.bind('private', function(res) {
+            //     toastr.success(JSON.stringify(res.message), {timeOut: 4000},{positionClass: "toast-top-center"})
+            // });
         //end
     });
 </script>
