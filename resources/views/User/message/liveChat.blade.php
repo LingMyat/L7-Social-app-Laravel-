@@ -1,5 +1,10 @@
 @extends('User.layout')
 @section('css')
+    <style>
+        p {
+            font-size: 14px;
+        }
+    </style>
 @endsection
 @section('search')
     <div class="search-bar">
@@ -84,8 +89,41 @@
                 </div>
             </div>
             <div class="card-footer">
+                {{-- <input type="file" id='img'> --}}
                 <div class="input-group">
-                    <input class="form-control" type="text" id="msg">
+                    <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">
+                <i class="bi bi-card-image"></i>
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Select Image</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="POST" id="image_form" enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-group">
+                                    <input id="image_input" type="file" name="image" data-max-file-size="1M"
+                                        data-allowed-file-extensions="jpeg jpg png" required class="form-control">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+                            <button type="submit" form="image_form" class="btn btn-info">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    <input class="form-control" type="text" placeholder="Enter Message" id="msg">
                     <button class="btn btn-primary" data-url="{{ route('liveChat#storeMessage') }}" id="send-btn">send <i
                             class="bx bxl-telegram"></i></button>
                 </div>
@@ -98,7 +136,7 @@
 
     <script>
         $(document).ready(function() {
-
+            $('#image_input').dropify();
             // const {roomId} = Qs.parse(location.search,{
             //     ignoreQueryPrefix : true
             // });
@@ -214,6 +252,13 @@
                 current_id = data.id;
                 scrollFunc()
             })
+
+            //imge start
+            $('#image_form').submit(function (e) {
+                e.preventDefault();
+                console.log($('#image_input').val());
+                $('.dropify-clear').click();
+            });
             scrollFunc();
         });
     </script>

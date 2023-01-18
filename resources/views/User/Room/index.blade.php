@@ -86,7 +86,6 @@
     </main><!-- End #main -->
 @endsection
 @section('script')
-    j
     <script>
         $(document).ready(function() {
             $('#room_image').dropify();

@@ -13,7 +13,9 @@ let users = [];
 // Run when client connects
 io.on('connection',(socket)=>{
     console.log('Someone is connect');
-
+    socket.on('msg',(e)=>{
+        console.log(e);
+    });
     socket.on('joinRoom',(joinRoomData)=>{
         socket.join(joinRoomData.roomId);
         users.push({

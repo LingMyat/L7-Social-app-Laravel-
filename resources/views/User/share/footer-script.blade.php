@@ -25,7 +25,7 @@
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"
     integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous">
 </script>
-<script src="{{ asset('js/app.js') }}"></script>
+{{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 
 <script>
     $(document).ready(function() {
@@ -35,9 +35,11 @@
             }
         });
 
-        Echo.channel('message-channel').listen('MessageEvent', (res) => {
-            toastr.success(JSON.stringify(res.message), {timeOut: 4000},{positionClass: "toast-top-center"})
-        });
+        // Echo.channel('message-channel').listen('MessageEvent', (res) => {
+        //     toastr.success(JSON.stringify(res.message), {timeOut: 4000},{positionClass: "toast-top-center"})
+        // });
+
+
         // Pusher.logToConsole = true;
 
         // var pusher = new Pusher('59ba2eab2eb53ae64ed6', {

@@ -50,7 +50,7 @@ class RoomController extends Controller
     }
     //storeMessage
     public function storeMessage(Request $request){
-        // logger($request->all());
+        logger($request->all());
         if ($request->parent == 'true') {
             $parent = LiveChatMessage::roomIn($request->roomId)
             ->where('user_id',$request->id)
