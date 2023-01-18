@@ -25,7 +25,8 @@
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"
     integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous">
 </script>
-<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+
 <script>
     $(document).ready(function() {
         $.ajaxSetup({
@@ -34,16 +35,19 @@
             }
         });
 
-            // Pusher.logToConsole = true;
+        Echo.channel('message-channel').listen('MessageEvent', (res) => {
+            toastr.success(JSON.stringify(res.message), {timeOut: 4000},{positionClass: "toast-top-center"})
+        });
+        // Pusher.logToConsole = true;
 
-            // var pusher = new Pusher('59ba2eab2eb53ae64ed6', {
-            //     cluster: 'ap1'
-            // });
+        // var pusher = new Pusher('59ba2eab2eb53ae64ed6', {
+        //     cluster: 'ap1'
+        // });
 
-            // var channel = pusher.subscribe('private.{{ auth()->id() }}');
-            // channel.bind('private', function(res) {
-            //     toastr.success(JSON.stringify(res.message), {timeOut: 4000},{positionClass: "toast-top-center"})
-            // });
+        // var channel = pusher.subscribe('private.{{ auth()->id() }}');
+        // channel.bind('private', function(res) {
+        //     toastr.success(JSON.stringify(res.message), {timeOut: 4000},{positionClass: "toast-top-center"})
+        // });
         //end
     });
 </script>
