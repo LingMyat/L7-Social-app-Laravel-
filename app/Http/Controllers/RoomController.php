@@ -44,13 +44,12 @@ class RoomController extends Controller
     //liveChat
     public function liveChat(Request $request){
         $room = Room::where('id',$request->roomId)->first();
-        $messages = LiveChatMessage::roomIn($request->roomId)->onlyParent()->with('room','user')->get();
+        $messages = LiveChatMessage::roomIn($request->roomId)->onlyParent()->with('room','user','media')->get();
         $lastMessage = LiveChatMessage::orderBy('id','desc')->first();
         return view('User.message.liveChat',compact('room','messages','lastMessage'));
     }
     //storeMessage
     public function storeMessage(Request $request){
-        logger($request->all());
         if ($request->parent == 'true') {
             $parent = LiveChatMessage::roomIn($request->roomId)
             ->where('user_id',$request->id)
@@ -72,5 +71,23 @@ class RoomController extends Controller
             ]);
         }
 
+    }
+
+    //storeImage
+    public function storeImage(Request $request)
+    {
+        $msg = LiveChatMessage::create([
+            'room_id'=>$request->room_id,
+            'user_id'=>auth()->id(),
+            'message'=>''
+        ]);
+        $path = Room::UPLOAD_PATH.'/'.date('Y')."/".date('m')."/";
+        $fileName = uniqid().time().'.'.$request->image->extension();
+        $request->image->move(public_path($path),$fileName);
+        Media::create([
+            'image'=>$path.$fileName,
+            'mediable_id'=>$msg->id,
+            'mediable_type'=>LiveChatMessage::class
+        ]);
     }
 }

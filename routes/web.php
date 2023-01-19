@@ -11,6 +11,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Jetstream\Rules\Role;
 
 Route::controller(AuthController::class)
 ->group(function(){
@@ -113,6 +114,7 @@ Route::middleware([
         Route::post('/store','store')->name('room#store');
         Route::get('/live-chat','liveChat')->name('room#liveChat');
         Route::post('/message','storeMessage')->name('liveChat#storeMessage');
+        Route::post('/image','storeImage')->name('liveChat#storeImage');
     });
 
     Route::controller(FriendRequestController::class)

@@ -19,7 +19,8 @@ class RoomMessagesResource extends JsonResource
             'room_id'=>$this->room_id,
             'message'=>$this->message,
             'sender'=>new UserInfoResource($this->user),
-            'child_messages'=>RoomMessagesResource::collection($this->childs)
+            'child_messages'=>RoomMessagesResource::collection($this->childs),
+            'image'=>new MediaResource($this->media)
         ];
     }
 }

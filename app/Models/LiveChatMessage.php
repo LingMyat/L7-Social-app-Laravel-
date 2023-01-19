@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Media;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LiveChatMessage extends Model
 {
@@ -35,5 +36,10 @@ class LiveChatMessage extends Model
     public function childs()
     {
         return $this->hasMany(LiveChatMessage::class, 'parent_id');
+    }
+
+    public function media()
+    {
+        return $this->morphOne(Media::class,'mediable');
     }
 }

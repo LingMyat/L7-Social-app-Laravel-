@@ -26,17 +26,23 @@
             <div class="card-bodey">
                 <div class="" style="height: 60vh; overflow-y: scroll; overflow-x:hidden;" id="mainContainer">
                     <div id="message_Container">
-                            @foreach ($messages as $message)
+                        @foreach ($messages as $message)
                             @if ($message->user->id == auth()->user()->id)
                                 <div class=" text-end m-1 mb-2">
                                     <small class=''>
                                         <div class="text-end">
-                                            <b style="max-width: 320px"
+                                            @if ($message->media)
+                                                <div style="max-width: 320px" class ='d-inline-block p-1 px-2 rounded-1 bg-info-light mx-3 rounded-1 text-start'>
+                                                    <img class="w-100" src="{{ $message->media->image }}" alt="">
+                                                </div>
+                                            @else
+                                                <b style="max-width: 320px"
                                                 class='d-inline-block p-1 px-2 rounded-1 bg-info-light mx-3 rounded-1 text-start'>
-                                                <i class="">
-                                                    <small>{{ $message->message }}</small>
-                                                </i>
-                                            </b>
+                                                    <i class="">
+                                                        <small>{{ $message->message }}</small>
+                                                    </i>
+                                                </b>
+                                            @endif
                                         </div>
                                         @foreach ($message->childs as $sameUserMsg)
                                             <div class="text-end mt-1">
@@ -56,11 +62,19 @@
                                         alt="Profile" class="rounded-circle">
                                     <small class="row msg-content">
                                         <b class="col-12">{{ $message->user->name }}</b>
-                                        <b class="col-8 bg-secondary-light ms-2 mt-1 rounded-1">
-                                            <i>
-                                                <small>{{ $message->message }}</small>
-                                            </i>
-                                        </b>
+                                        @if ($message->media)
+                                            <div style="max-width: 320px" class="bg-secondary-light py-1 ms-2 my-1 rounded-1">
+                                                <img class="w-100" src="{{ $message->media->image }}"
+                                                    alt="">
+                                            </div>
+                                        @else
+                                            <b class="col-8 bg-secondary-light ms-2 mt-1 rounded-1">
+                                                <i>
+                                                    <small>{{ $message->message }}</small>
+                                                </i>
+                                            </b>
+                                        @endif
+
                                         @foreach ($message->childs as $sameUserMsg)
                                             <b class="col-8 bg-secondary-light ms-2 mt-1 rounded-1">
                                                 <i>
@@ -79,11 +93,10 @@
                             alt="Profile" class="rounded-circle">
                         <small class="row">
                             <b class="col-12">{{ auth()->user()->name }}</b>
-                            <b class="col-7 bg-secondary-light ms-2 mt-1 rounded-1">
-                                <i>
-                                    <small>Hello What Are You Doing?huyu cuurhcue euihdurhch</small>
-                                </i>
-                            </b>
+                            <div class="col-6 bg-secondary-light ms-2 mt-1 rounded-1">
+                                <img class="w-100" src="{{ asset('upload/room/2023/01/63b79dde036561672977886.png') }}"
+                                    alt="">
+                            </div>
                         </small>
                     </div> --}}
                 </div>
@@ -92,37 +105,37 @@
                 {{-- <input type="file" id='img'> --}}
                 <div class="input-group">
                     <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#exampleModal">
-                <i class="bi bi-card-image"></i>
-            </button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="bi bi-card-image"></i>
+                    </button>
 
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Select Image</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="POST" id="image_form" enctype="multipart/form-data">
-                                @csrf
-                                <div class="form-group">
-                                    <input id="image_input" type="file" name="image" data-max-file-size="1M"
-                                        data-allowed-file-extensions="jpeg jpg png" required class="form-control">
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Select Image</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
-                            <button type="submit" form="image_form" class="btn btn-info">Send</button>
+                                <div class="modal-body">
+                                    <form action="{{ route('liveChat#storeImage') }}" method="POST" id="image_form" enctype="multipart/form-data" data-url="{{ route('liveChat#storeImage') }}">
+                                        @csrf
+                                        <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                        <div class="form-group">
+                                            <input id="image_input" type="file" name="image" data-max-file-size="1M"
+                                                data-allowed-file-extensions="jpeg jpg png" required class="form-control">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" id="modal_close" data-bs-dismiss="modal">close</button>
+                                    <button type="submit" form="image_form" class="btn btn-info">Send</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
                     <input class="form-control" type="text" placeholder="Enter Message" id="msg">
                     <button class="btn btn-primary" data-url="{{ route('liveChat#storeMessage') }}" id="send-btn">send <i
                             class="bx bxl-telegram"></i></button>
@@ -134,7 +147,6 @@
     </main><!-- End #main -->
 @endsection
 @section('script')
-
     <script>
         $(document).ready(function() {
             $('#image_input').dropify();
@@ -147,9 +159,11 @@
             $name = "{{ auth()->user()->name }}";
             $profile = "{{ $profile }}";
             $roomId = "{{ request('roomId') }}";
-            let current_id = "{{ $lastMessage->user->id ?? 0}}"  ;
-            let scrollFunc = ()=>{
-                $('#mainContainer').animate({scrollTop: $('#message_Container').height()},0);
+            let current_id = "{{ $lastMessage->user->id ?? 0 }}";
+            let scrollFunc = () => {
+                $('#mainContainer').animate({
+                    scrollTop: $('#message_Container').height()
+                }, 0);
             }
             let ip_address = '127.0.0.1';
             let socket_port = '3000';
@@ -171,7 +185,7 @@
             socket.on('leaving', name => {
                 message_container.innerHTML +=
                     `<small class="text-center d-block my-1"><b>${name} has left the room.</b></small>`;
-                    scrollFunc();
+                scrollFunc();
             })
             // socket.on('connection');
             $('#send-btn').click(function(e) {
@@ -208,12 +222,12 @@
                 <div class="text-end m-1 mb-2">
                         <small class='text-start'>
                             <div class="text-end">
-                                                <b style="max-width: 320px" class ='d-inline-block p-1 px-2 rounded-1 bg-info-light mx-3 rounded-1 text-start'>
-                                                    <i class="">
-                                                        <small>${data.message}</small>
-                                                </i>
-                                                </b>
-                                            </div>
+                                <b style="max-width: 320px" class ='d-inline-block p-1 px-2 rounded-1 bg-info-light mx-3 rounded-1 text-start'>
+                                    <i class="">
+                                        <small>${data.message}</small>
+                                    </i>
+                                </b>
+                            </div>
                         </small>
                 </div>
                 `;
@@ -255,25 +269,69 @@
             })
 
             //imge start
-            $('#image_form').submit(function (e) {
+            $('#image_form').submit(function(e) {
                 e.preventDefault();
 
-                const reader = new FileReader();
-                reader.addEventListener('load',()=>{
-                    data = {
-                    id: $id,
-                    roomId: $roomId,
-                    name: $name,
-                    profile: $profile,
-                    src: reader.result,
+                var file = this;
+                $.ajax({
+                    type: $(file).attr('method'),
+                    url: $(file).attr('action'),
+                    data: new FormData(file),
+                    processData:false,
+                    dataType: "json",
+                    contentType: false,
+                    success: function (response) {
+
                     }
+                });
+
+                const reader = new FileReader();
+                reader.addEventListener('load', () => {
+                    data = {
+                        id: $id,
+                        roomId: $roomId,
+                        name: $name,
+                        profile: $profile,
+                        src: reader.result,
+                        file: $('#image_input')[0].files[0]
+                    };
+
                     socket.emit('image', data)
                 });
                 reader.readAsDataURL($('#image_input')[0].files[0]);
-                $('.dropify-clear').click();
+
             });
-            socket.on('image',(data)=>{
-                message_container.innerHTML =   `<img class="w-50" src="${data.src}" alt="">`
+
+            socket.on('image', (data) => {
+                $sender = `<div class="text-end m-1 mb-2">
+                        <small class='text-start'>
+                            <div class="text-end">
+                                <div style="max-width: 320px" class ='d-inline-block p-1 px-2 rounded-1 bg-info-light mx-3 rounded-1 text-start'>
+                                    <img class="w-100" src="${data.src}" alt="">
+                                </div>
+                            </div>
+                        </small>
+                </div>`;
+
+                $reciever =  `
+                <div class="mb-2 px-2 d-flex gap-2">
+                        <img style="height: 25px;width: 25px;"
+                            src="${data.profile}"
+                            alt="Profile" class="rounded-circle">
+                        <small class="row msg-content">
+                            <b class="col-12">${data.name}</b>
+                            <div style="max-width: 320px" class="bg-secondary-light py-1 ms-2 my-1 rounded-1">
+                                <img class="w-100" src="${data.src}"
+                                    alt="">
+                            </div>
+                        </small>
+                    </div>
+                `
+                data.id == $id ? message_container.innerHTML += $sender : message_container.innerHTML += $reciever;
+                $('.dropify-clear').click();
+                $('#modal_close').click();
+                current_id = data.id;
+                scrollFunc();
             });
             scrollFunc();
         });
